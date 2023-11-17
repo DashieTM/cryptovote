@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { connectMetaMaskAccount, getBalance, hasAccountPermissions, createProposal, getProposals, resetBallot } from '../lib/api.js';
+  import { connectMetaMaskAccount, getBalance, hasAccountPermissions, createBallot, getBallots } from '../lib/api.js';
 </script>
 
 <template id="Home">
@@ -7,9 +7,8 @@
   <v-btn @click="connectMetaMaskAccount">Connect to metamask</v-btn>
   <v-btn @click="() => console.log(hasAccountPermissions())">Has Account Permissions</v-btn>
   <v-btn @click="getBalance">Get balance</v-btn>
-  <v-btn @click="() => createProposal('Test')">Create Proposal 'Test'</v-btn>
-  <v-btn @click="getProposals">Get Proposal</v-btn>
-  <v-btn @click="resetBallot">Reset Ballot</v-btn>
+  <v-btn @click="createBallot(['Proposal1', 'Proposal2', 'Proposal3'])">Create ballot</v-btn>
+  <v-btn @click="getBallots">Get all ballots</v-btn>
 </template>
 
 <style scoped></style>

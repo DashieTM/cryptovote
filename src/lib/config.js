@@ -1,7 +1,71 @@
-export const contractAddress = '0xEd69cE9A0f15c107D982a5441b49C8000E0E4F86'
-export const contractAbi = [
+export const ballotManagerAddress = '0x0fA3890E88643dDBC2f829aC62ece5e4Fda52c4d'
+export const ballotManagerAbi = [
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "ballots",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string[]",
+                "name": "proposalNames",
+                "type": "string[]"
+            }
+        ],
+        "name": "createBallot",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
     {
         "inputs": [],
+        "name": "getBallots",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]
+export const ballotAbi = [
+    {
+        "inputs": [
+            {
+                "internalType": "string[]",
+                "name": "proposalNames",
+                "type": "string[]"
+            },
+            {
+                "internalType": "address",
+                "name": "chairpersonAddress",
+                "type": "address"
+            }
+        ],
         "stateMutability": "nonpayable",
         "type": "constructor"
     },
@@ -16,19 +80,6 @@ export const contractAbi = [
             }
         ],
         "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "name",
-                "type": "string"
-            }
-        ],
-        "name": "createProposal",
-        "outputs": [],
-        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -79,13 +130,6 @@ export const contractAbi = [
             }
         ],
         "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "reset",
-        "outputs": [],
-        "stateMutability": "nonpayable",
         "type": "function"
     },
     {

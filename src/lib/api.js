@@ -1,12 +1,12 @@
 import Web3, { Contract, errors } from 'web3';
-import { contractAddress, contractAbi } from './config';
+import { ballotManagerAddress, ballotManagerAbi, ballotAbi } from './config';
 
 let web3;
-let contract;
+let ballotManagerContract;
 
 if (window.ethereum) {
     web3 = new Web3(window.ethereum);
-    contract = new web3.eth.Contract(contractAbi, contractAddress)
+    ballotManagerContract = new web3.eth.Contract(ballotManagerAbi, ballotManagerAddress);
 } else (
     console.log('MetaMask is not installed')
 )
@@ -25,6 +25,11 @@ export const connectMetaMaskAccount = async () => {
       }
 }
 
+const getAccount = async () => {
+    let accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    return accounts[0];
+}
+
 export const hasAccountPermissions = async () => {
     if (window.ethereum) {
         const permissions = await window.ethereum.request({ method: 'wallet_getPermissions' });
@@ -34,77 +39,76 @@ export const hasAccountPermissions = async () => {
 
 export const getBalance = async () => {
     try {
-        let accounts = await window.ethereum.request({ method: 'eth_accounts' });
-        let balance = await window.ethereum.request({ method: 'eth_getBalance',  params: [accounts[0], null]});
+        const account = await getAccount();
+        const balance = await window.ethereum.request({ method: 'eth_getBalance',  params: [account, null]});
         console.log(web3.utils.fromWei(balance, 'ether'));
     } catch (error) {
         console.error('getBalance error')
     }
 }
 
-export const createProposal = async (name) => {
+export const createBallot = async (proposalNames) => {
     try {
-        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-        const receipt = await contract.methods.createProposal(name).send({ from: accounts[0] });
-        console.log(receipt.status);
+        const account = await getAccount();
+        const receipt = await ballotManagerContract.methods.createBallot(proposalNames).send({ from: account });
+        console.log(receipt.status); // TODO: remove
+        return { status: receipt.status };
     } catch (error) {
-        console.error('createProposal error', error);
+        console.error('createBallot error', error);
     }
 }
 
-export const getProposals = async () => {
+export const getBallots = async () => {
     try {
-        const proposal = await contract.methods.proposals(0).call();
-        console.log(proposal)
+        const result = await ballotManagerContract.methods.getBallots().call();
+        console.log(result.status); // TODO: remove
     } catch (error) {
-        console.error('Proposals error', error);
+        console.error('getBallots error', error);
     }
 }
 
-export const giveRightToVote = async (to) => {
-
-}
-
-export const vote = async (proposal) => {
-
-}
-
-export const resetBallot = async () => {
+export const giveRigthToVote = async (to) => {
     try {
-        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-        const receipt = await contract.methods.reset().send({ from: accounts[0] });
-        console.log(receipt.status);
+
     } catch (error) {
-        console.error('createProposal error', error);
+
+    }
+} 
+
+export const vote = async (ballotAdress, proposal) => {
+    try {
+        const ballotContract = new web3.eth.Contract(ballotAbi, ballotAdress);
+
+    } catch (error) {
+
     }
 }
 
-// export const retrieveNumber = async () => {
+export const delegateVote = async (to) => {
+    try {
+
+    } catch (error) {
+
+    }
+}
+
+
+
+// export const createProposal = async (name) => {
 //     try {
 //         const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-//         const response = await contract.methods.retrieve().call({ from: accounts[0] });
-//         console.log(response.toString());
-//     } catch (error) {
-//         console.error('retrieveNumber error', error);
-//     }
-// }
-
-// export const storeNumber = async (num) => {
-//     try {
-//         const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-//         const receipt = await contract.methods.store(num).send({ from: accounts[0] });
+//         const receipt = await contract.methods.createProposal(name).send({ from: accounts[0] });
 //         console.log(receipt.status);
 //     } catch (error) {
-//         console.error('storeNumber error', error);
+//         console.error('createProposal error', error);
 //     }
 // }
 
-// export const getActiveBallots = () => {
-
+// export const getProposals = async () => {
+//     try {
+//         const proposal = await contract.methods.proposals(0).call();
+//         console.log(proposal)
+//     } catch (error) {
+//         console.error('Proposals error', error);
+//     }
 // }
-
-// export const getPastBallots = () => {
-//     return
-// }
-
-// TODO: How to show past Ballots?
