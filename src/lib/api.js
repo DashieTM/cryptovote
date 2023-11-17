@@ -67,28 +67,39 @@ export const getBallots = async () => {
     }
 }
 
-export const giveRigthToVote = async (to) => {
+export const giveRightToVote = async (to) => {
     try {
-
+        // TODO: implement
     } catch (error) {
-
+        console.error('giveRightToVote error', error);
     }
 } 
 
 export const vote = async (ballotAdress, proposal) => {
     try {
         const ballotContract = new web3.eth.Contract(ballotAbi, ballotAdress);
-
+        // TODO: implement
     } catch (error) {
-
+        console.error('vote error', error);
     }
 }
 
 export const delegateVote = async (to) => {
     try {
-
+        // TODO: implement
     } catch (error) {
+        console.error('delegateVote error', error);
+    }
+}
 
+export const getProposals = async () => {
+    try {
+        // TODO: implement
+        const ballotContract = new web3.eth.Contract(ballotAbi, ballotAdress);
+        const proposals = await ballotContract.methods.proposals().call();
+        console.log(proposals)
+    } catch (error) {
+        console.error('getProposals error', error);
     }
 }
 
@@ -101,14 +112,5 @@ export const delegateVote = async (to) => {
 //         console.log(receipt.status);
 //     } catch (error) {
 //         console.error('createProposal error', error);
-//     }
-// }
-
-// export const getProposals = async () => {
-//     try {
-//         const proposal = await contract.methods.proposals(0).call();
-//         console.log(proposal)
-//     } catch (error) {
-//         console.error('Proposals error', error);
 //     }
 // }
