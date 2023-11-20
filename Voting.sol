@@ -13,8 +13,8 @@ contract BallotManager {
      * @param proposalNames Names of proposals for the new ballot
      * @return address Address of the created ballot
      */
-    function createBallot(string[] memory proposalNames) public returns (address) {
-        Ballot newBallot = new Ballot(proposalNames, msg.sender);
+    function createBallot(string memory name, string[] memory proposalNames) public returns (address) {
+        Ballot newBallot = new Ballot(name, proposalNames, msg.sender);
         ballots.push(address(newBallot));
         return address(newBallot);
     }
@@ -46,6 +46,8 @@ contract Ballot {
         uint voteCount; // number of accumulated votes
     }
 
+    string public name;
+
     address public chairperson;
 
     mapping(address => Voter) public voters;
@@ -57,7 +59,8 @@ contract Ballot {
      * @param proposalNames Names of proposals
      * @param chairpersonAddress Address of the chairperson
      */
-    constructor(string[] memory proposalNames, address chairpersonAddress) {
+    constructor(string memory ballotName, string[] memory proposalNames, address chairpersonAddress) {
+        name = ballotName;
         chairperson = chairpersonAddress;
         voters[chairperson].weight = 1;
 
@@ -67,6 +70,14 @@ contract Ballot {
                 voteCount: 0
             }));
         }
+    }
+
+    /**
+     * @dev Get the list of all proposals
+     * @return Proposal[] List of proposals
+     */
+    function getProposals() public view returns (Proposal[] memory) {
+        return proposals;
     }
 
     /** 
@@ -156,5 +167,6 @@ contract Ballot {
             returns (string memory winnerName_)
     {
         winnerName_ = proposals[winningProposal()].name;
+        return winnerName_;
     }
 }
