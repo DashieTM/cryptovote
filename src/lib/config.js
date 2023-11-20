@@ -1,4 +1,4 @@
-export const ballotManagerAddress = '0x0fA3890E88643dDBC2f829aC62ece5e4Fda52c4d'
+export const ballotManagerAddress = '0x9A8aE8bd433F5Fe1DB91A42afFfe0412745aDbc2'
 export const ballotManagerAbi = [
     {
         "inputs": [
@@ -21,6 +21,11 @@ export const ballotManagerAbi = [
     },
     {
         "inputs": [
+            {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+            },
             {
                 "internalType": "string[]",
                 "name": "proposalNames",
@@ -55,6 +60,11 @@ export const ballotManagerAbi = [
 export const ballotAbi = [
     {
         "inputs": [
+            {
+                "internalType": "string",
+                "name": "ballotName",
+                "type": "string"
+            },
             {
                 "internalType": "string[]",
                 "name": "proposalNames",
@@ -96,6 +106,31 @@ export const ballotAbi = [
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "getProposals",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "voteCount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Ballot.Proposal[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "internalType": "address",
@@ -106,6 +141,19 @@ export const ballotAbi = [
         "name": "giveRightToVote",
         "outputs": [],
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
