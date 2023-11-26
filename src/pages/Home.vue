@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { connectMetaMaskAccount, getBalance, hasAccountPermissions, createBallot, getBallots, giveRightToVote, vote, delegateVote, getProposals, getWinningProposal } from '../lib/api.js';
+  import { connectMetaMaskAccount, getBalance, hasAccountPermissions, createBallot, getBallots, giveRightToVote, vote, getProposals, getWinningProposal, hasRightToVote, hasVoted } from '../lib/api.js';
 </script>
 
 <template id="Home">
@@ -14,6 +14,8 @@
   <v-btn @click="() => vote('0xd6B29D8aa6EF02545141FA8366cA864aC53e8Cc6', 1)">Vote for proposal 2 in FirstBallot</v-btn>
   <v-btn @click="() => getProposals('0xd6B29D8aa6EF02545141FA8366cA864aC53e8Cc6')">Get proposals of FirstBallot</v-btn>
   <v-btn @click="() => getWinningProposal('0xd6B29D8aa6EF02545141FA8366cA864aC53e8Cc6')">Get winning proposal of FirstBallot</v-btn>
+  <v-btn @click="() => hasRightToVote('0xd6B29D8aa6EF02545141FA8366cA864aC53e8Cc6')">Has right to vote in FirstBallot</v-btn>
+  <v-btn @click="() => hasVoted('0xd6B29D8aa6EF02545141FA8366cA864aC53e8Cc6')">Has voted in FirstBallot</v-btn>
 </template>
 
 <style scoped></style>

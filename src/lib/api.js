@@ -29,7 +29,7 @@ export const connectMetaMaskAccount = async () => {
 }
 
 const getAccount = async () => {
-    let accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
     
     return accounts[0];
 }
@@ -37,10 +37,9 @@ const getAccount = async () => {
 export const hasAccountPermissions = async () => {
     if (window.ethereum) {
         const permissions = await window.ethereum.request({ method: 'wallet_getPermissions' });
-        
-        // TODO: wallet permission when account locked?
+        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
 
-        return permissions.length > 0 ? true : false;
+        return (permissions.length > 0 && accounts.length > 0);
     }
 }
 
@@ -97,7 +96,31 @@ export const giveRightToVote = async (ballotAddress, to) => {
     } catch (error) {
         console.error('giveRightToVote error', error);
     }
-} 
+}
+
+export const hasRightToVote = async (ballotAddress) => {
+    try {
+        const account = await getAccount();
+        const ballotContract = new web3.eth.Contract(ballotAbi, ballotAddress);
+        const voter = await ballotContract.methods.voters(account).call();
+        
+        return voter.weight > 0;
+    } catch (error) {
+        console.error('hasRightToVote error', error);
+    }
+}
+
+export const hasVoted = async (ballotAddress) => {
+    try {
+        const account = await getAccount();
+        const ballotContract = new web3.eth.Contract(ballotAbi, ballotAddress);
+        const voter = await ballotContract.methods.voters(account).call();
+        
+        return voter.voted;
+    } catch (error) {
+        console.error('hasVoted error', error);
+    }
+}
 
 export const vote = async (ballotAddress, proposal) => {
     try {
