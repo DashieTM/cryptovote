@@ -60,7 +60,7 @@ export const getBalance = async () => {
 
     return web3.utils.fromWei(balance, 'ether');
   } catch (error) {
-    console.error('getBalance error')
+    return -1;
   }
 }
 
@@ -69,7 +69,10 @@ export const createBallot = async (ballotName, proposalNames) => {
     const account = await getAccount();
     const receipt = await ballotManagerContract.methods.createBallot(ballotName, proposalNames).send({ from: account });
     console.log(receipt); // TODO: remove
-    return receipt.status > 0 ? true : false;
+    return {
+      status: receipt.status > 0 ? true : false,
+      address: receipt.address,
+    }
 
   } catch (error) {
     console.error('createBallot error', error);

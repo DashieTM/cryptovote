@@ -12,10 +12,10 @@ export default {
   },
   props: {
     proposal_name: String,
-    vote_count: Number,
+    vote_count: BigInt,
     address: String,
     index: Number,
-    vote_available: Boolean,
+    can_vote: Boolean,
     is_ballot: Boolean,
   },
   emits: ["proposalUpdate"],
@@ -41,7 +41,7 @@ export default {
     <v-card-text class="Description">{{ vote_count }}</v-card-text>
     <v-card-actions>
       <VSpacer></VSpacer>
-      <div class="Vote" v-if="vote_available">
+      <div class="Vote" v-if="can_vote">
         <!-- <VBtn class="VoteButton" @click="vote(this.address, this.index)">Vote</VBtn> -->
         <VBtn class="VoteButton" @click="() => lol()">Vote</VBtn>
       </div>

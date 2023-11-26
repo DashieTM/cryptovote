@@ -17,8 +17,8 @@ const navigation = ref(false);
     <VList>
       <VListItem title="Home" to="/"></VListItem>
       <VListItem title="Ballots" to="/Ballots"></VListItem>
-      <VListItem title="Current Proposals" to="/CurrentProposals"></VListItem>
       <VListItem title="Create New Proposal" to="/NewProposal"></VListItem>
+      <VListItem title="Audit" to="/Audit"></VListItem>
     </VList>
   </VNavigationDrawer>
 </template>

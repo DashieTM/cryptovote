@@ -9,7 +9,7 @@ import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { aliases, mdi } from 'vuetify/iconsets/mdi';
 import "vuetify/styles";
-import CurrentProposals from './pages/CurrentProposals.vue';
+import Audit from './pages/Audit.vue';
 import Home from './pages/Home.vue';
 import NewProposal from './pages/NewProposal.vue';
 import Ballots from './pages/Ballots.vue';
@@ -19,7 +19,7 @@ const routes = [
   { path: '/', component: Home },
   { path: '/NewProposal', component: NewProposal },
   { path: '/Ballots', component: Ballots },
-  { path: '/CurrentProposals', component: CurrentProposals },
+  { path: '/Audit', component: Audit },
 ];
 
 const router = createRouter({

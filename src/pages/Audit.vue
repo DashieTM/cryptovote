@@ -2,7 +2,7 @@
 import Proposal from './../components/Proposal.vue';
 </script>
 
-<template id="CurrentProposals">
+<template id="Audit">
   <v-container fluid>
     <v-row dense>
       <v-col v-for="n in 4" :key="n" cols="12">
