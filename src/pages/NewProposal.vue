@@ -1,40 +1,36 @@
-<script lang="ts">
-export default {
-  data: () => ({
-    valid: false,
-    proposal_name: "",
-    proposal_description: "",
-    name_rule: [
-      (value: String) => {
-        if (value) return true;
-        return "Please enter a proposal name";
-      },
-    ],
-    address: 0,
-    // should later be some cryptoscamaddress
-  }),
-};
+<script setup lang="ts">
+import ProposalEntry from '../components/ProposalEntry.vue';
+import { ref } from 'vue';
+
+const valid = ref(false);
+const ballot_name = ref("");
+const proposals = [
+  { 'name': "" },
+  { 'name': "" }
+];
+const name_rule = [
+  (value: String) => {
+    if (value) return true;
+    return "Please enter a ballot name";
+  }
+];
+function createProposal() {
+  proposals.push({ 'name': "" });
+}
 </script>
 
-<template id="NewProposal">
+<template id="NewBallot">
   <v-form v-model="valid">
-    <v-container>
-      <v-row>
-        <!-- is this better or the one from the proposals? -->
-        <v-col cols="12" md="10" lg="8">
-          <v-text-field v-model="proposal_name" :rules="name_rule" label="Proposal Name" required
-            hide-details></v-text-field>
-        </v-col>
-        <v-col cols="12" md="10" lg="8">
-          <v-textarea v-model="proposal_description" label="Proposal Description" hide-details></v-textarea>
-        </v-col>
-        <v-col cols="12" md="10" lg="8">
-          <v-text-field v-model="address" label="Proposal Address" required hide-details></v-text-field>
-        </v-col>
-      </v-row>
-    </v-container>
+    <v-col cols="12" md="10" lg="8">
+      <v-text-field v-model="ballot_name" :rules="name_rule" label="Ballot Name" required hide-details></v-text-field>
+    </v-col>
+    <v-col cols="12" md="10" lg="8">
+      <v-btn @click="() => createProposal()">Add Proposal</v-btn>
+    </v-col>
+    <div v-for="(proposal) in proposals">
+      <ProposalEntry></ProposalEntry>
+    </div>
   </v-form>
 </template>
-<!-- integrate this with the contract-->
 
 <style scoped></style>
