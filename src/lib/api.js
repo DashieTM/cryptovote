@@ -37,6 +37,8 @@ const getAccount = async () => {
 export const hasAccountPermissions = async () => {
     if (window.ethereum) {
         const permissions = await window.ethereum.request({ method: 'wallet_getPermissions' });
+        
+        // TODO: wallet permission when account locked
 
         return permissions.length > 0 ? true : false;
     }
