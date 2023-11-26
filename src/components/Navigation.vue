@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { showWalletWindow } from '../lib/api';
+import { useTheme } from 'vuetify'
 
 const navigation = ref(false);
+const theme = useTheme()
+
+function toggleTheme () {
+  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'tokyoNight'
+}
 </script>
 
 <template id="Navigation">
@@ -10,6 +16,7 @@ const navigation = ref(false);
     <VAppBarNavIcon @click.stop="navigation = !navigation" />
     <VAppBarTitle>CryptoScam</VAppBarTitle>
     <VSpacer />
+    <v-btn icon="mdi-theme-light-dark" @click="toggleTheme"></v-btn>
     <v-btn icon="$vuetify" @click="showWalletWindow"></v-btn>
   </VAppBar>
 

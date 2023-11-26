@@ -5,11 +5,15 @@ import Navigation from "./components/Navigation.vue";
 <template>
   <VApp>
     <Navigation />
-    <v-main>
+    <v-main class="body">
       <router-view></router-view>
     </v-main>
     <VFooter>2023 CryptoScam</VFooter>
   </VApp>
 </template>
 
-<style scoped></style>
+<style scoped>
+.body {
+  height: 90%;
+}
+</style>
