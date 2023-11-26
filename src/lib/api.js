@@ -38,7 +38,7 @@ export const hasAccountPermissions = async () => {
     if (window.ethereum) {
         const permissions = await window.ethereum.request({ method: 'wallet_getPermissions' });
         
-        // TODO: wallet permission when account locked
+        // TODO: wallet permission when account locked?
 
         return permissions.length > 0 ? true : false;
     }
@@ -148,3 +148,7 @@ export const getWinningProposal = async (ballotAddress) => {
         console.error('getWinningProposal error', error);
     }
 }
+
+
+// TODO: Add function to check if a user can vote
+// TODO: Add function to check if a user has already voted
