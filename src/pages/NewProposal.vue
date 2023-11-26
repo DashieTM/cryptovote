@@ -46,32 +46,34 @@ function submit() {
 </script>
 
 <template v-model="valid" id="NewBallot">
-  <v-form v-on:submit.prevent="submit">
-    <v-col cols="12" md="10" lg="8">
-      <v-text-field v-model="ballot_name" :rules="name_rule" label="Ballot Name" required hide-details></v-text-field>
-    </v-col>
-    <v-col cols="12" md="10" lg="8">
-      <v-btn @click="() => addProposal()">Add Proposal</v-btn>
-    </v-col>
+  <v-form v-on:submit.prevent="submit" class="form">
+      <v-text-field class="input" v-model="ballot_name" :rules="name_rule" label="Ballot Name" required hide-details></v-text-field>
+      <v-btn class="button" @click="() => addProposal()">Add Proposal</v-btn>
     <div v-for="index in proposal_count">
-      <v-col cols="12" md="10" lg="8">
-        <v-text-field v-model="proposal_names[index-1]" :rules="name_rule" label="Enter a Proposal" required
+        <v-text-field class="input" v-model="proposal_names[index-1]" :rules="name_rule" label="Enter a Proposal" required
           hide-details></v-text-field>
-      </v-col>
     </div>
-    <v-col cols="12" md="10" lg="8">
-      <v-btn @click="() => addVoter()">Add Voter</v-btn>
-    </v-col>
+      <v-btn class="button" @click="() => addVoter()">Add Voter</v-btn>
     <div v-for="index in voter_count">
-      <v-col cols="12" md="10" lg="8">
-        <v-text-field v-model="voters[index-1]" :rules="name_rule" label="Enter a Voter" required
+        <v-text-field class="input" v-model="voters[index-1]" :rules="name_rule" label="Enter a Voter" required
           hide-details></v-text-field>
-      </v-col>
     </div>
-    <v-col cols="12" md="10" lg="8">
-      <v-btn type="submit">Create Ballot</v-btn>
-    </v-col>
+      <v-btn class="button" type="submit">Create Ballot</v-btn>
   </v-form>
 </template>
 
-<style scoped></style>
+<style scoped>
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.input {
+  margin: 2vh;
+}
+
+.button {
+  margin: 2vh;
+}
+</style>

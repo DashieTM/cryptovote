@@ -50,23 +50,33 @@ export default {
 <template id="Ballots">
   <div v-if="fetching" class="loading">Loading...</div>
   <div v-else="" class="ballots">
-    <div v-for="(ballot) in ballots" :key="ballot" cols="12">
+    <v-card v-for="(ballot) in ballots" :key="ballot" cols="12" class="ballot">
       <div class="title">{{ ballot.name }}</div>
       <div v-for="(proposal, index) in ballot.proposals" :key="proposal" cols="12">
-        <Proposal :proposal_name="proposal.name" :address="ballot.address" :vote_count="proposal.voteCount" :index="index"
+        <Proposal class="proposal" :proposal_name="proposal.name" :address="ballot.address" :vote_count="proposal.voteCount" :index="index"
           proposal_description="description" :can_vote="true"></Proposal>
       </div>
-    </div>
+    </v-card>
   </div>
 </template>
 
 <style scoped>
 .title {
-  font-size: 2rem;
+  font-size: 4vh;
+  margin-left: 2vh;
 }
+
 .ballots {
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+
+.proposal{
+  margin: 2vh;
+}
+
+.ballot {
+  margin: 1vh;
 }
 </style>

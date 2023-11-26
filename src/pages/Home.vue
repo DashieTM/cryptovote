@@ -15,12 +15,26 @@ onMounted(() => {
 </script>
 
 <template id="Home">
-  <h1>Welcome to CryptoScam</h1>
-  <h2>Your favorite site for a pump and dump.</h2>
-  <div>Your current balance to waste: {{ balance }}</div>
-  <v-btn
-    @click="() => giveRightToVote('0xd6B29D8aa6EF02545141FA8366cA864aC53e8Cc6', '0x189794Ed416b5065375e8A648F25Ac01Adaee240')">Give
-    right to vote to Voter 1 on ballot FirstBallot</v-btn>
+  <v-card class="home">
+    <h1>Welcome to CryptoScam</h1>
+    <h2>Your favorite site for a pump and dump.</h2>
+    <div>Your current balance to waste: {{ balance }}</div>
+    <v-btn
+      @click="() => giveRightToVote('0xd6B29D8aa6EF02545141FA8366cA864aC53e8Cc6', '0x189794Ed416b5065375e8A648F25Ac01Adaee240')">Give
+      right to vote to Voter 1 on ballot FirstBallot</v-btn>
+  </v-card>
 </template>
 
-<style scoped></style>
+<style scoped>
+h1 {
+  
+}
+
+.home {
+  margin: 2vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+</style>

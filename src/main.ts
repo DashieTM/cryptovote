@@ -4,7 +4,7 @@ import App from "./App.vue";
 import "./style.css";
 
 import '@mdi/font/css/materialdesignicons.css';
-import { createVuetify } from "vuetify";
+import { createVuetify, ThemeDefinition } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { aliases, mdi } from 'vuetify/iconsets/mdi';
@@ -14,6 +14,21 @@ import Home from './pages/Home.vue';
 import NewProposal from './pages/NewProposal.vue';
 import Ballots from './pages/Ballots.vue';
 import { hasAccountPermissions, connectMetaMaskAccount } from './lib/api.js';
+
+const tokyoNight = {
+  dark: true,
+  colors: {
+    background: '#1A1B26',
+    surface: '#1A1B26',
+    primary: '#1A1B26',
+    secondary: '#a9b1d6',
+    error: '#F28B82',
+    info: '#613583',
+    success: '#81C995',
+    warning: '#FDD633',
+  }
+}
+
 
 const routes = [
   { path: '/', component: Home },
@@ -50,6 +65,12 @@ const vuetify = createVuetify({
     aliases,
     sets: {
       mdi,
+    },
+  },
+  theme: {
+    defaultTheme: 'tokyoNight',
+    themes: {
+      tokyoNight,
     },
   },
 });

@@ -68,10 +68,17 @@ export const createBallot = async (ballotName, proposalNames) => {
   try {
     const account = await getAccount();
     const receipt = await ballotManagerContract.methods.createBallot(ballotName, proposalNames).send({ from: account });
-    console.log(receipt); // TODO: remove
+    if (receipt.status) {
+      const ballotCreatedEvent = receipt.events.BallotCreated.returnValues;
+      const ballotAddress = ballotCreatedEvent.ballotAddress;
+      return {
+        status: true,
+        address: ballotAddress
+      }
+    }
     return {
-      status: receipt.status > 0 ? true : false,
-      address: receipt.address,
+      status: false,
+      address: null
     }
 
   } catch (error) {

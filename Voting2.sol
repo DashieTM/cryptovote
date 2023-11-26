@@ -6,6 +6,7 @@ pragma solidity >=0.7.0 <0.9.0;
  * @dev Manages multiple instances of the Ballot contract
  */
 contract BallotManager {
+    event BallotCreated(address indexed ballotAddress);
     address[] public ballots;
 
     /**
@@ -16,6 +17,7 @@ contract BallotManager {
     function createBallot(string[] memory proposalNames) public returns (address) {
         Ballot newBallot = new Ballot(proposalNames, msg.sender);
         ballots.push(address(newBallot));
+        emit(BallotCreated(address(newBallot)));
         return address(newBallot);
     }
 

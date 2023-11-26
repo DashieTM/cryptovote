@@ -20,9 +20,7 @@ export default {
   },
   emits: ["proposalUpdate"],
   methods: {
-    lol() {
-      console.log(this.address);
-      console.log(this.index);
+    voteForProposal() {
       this.vote_available = false;
       vote(this.address, this.index).then((success: boolean) => {
         if (!success) {
@@ -37,13 +35,12 @@ export default {
 
 <template id="Proposal">
   <v-card class="Vote">
-    <v-card-title>{{ proposal_name }}</v-card-title>
-    <v-card-text class="Description">{{ vote_count }}</v-card-text>
+    <v-card-title class="title">{{ proposal_name }}</v-card-title>
+    <VSpacer></VSpacer>
     <v-card-actions>
-      <VSpacer></VSpacer>
+    <v-card-text class="Description">{{ vote_count }}</v-card-text>
       <div class="Vote" v-if="can_vote">
-        <!-- <VBtn class="VoteButton" @click="vote(this.address, this.index)">Vote</VBtn> -->
-        <VBtn class="VoteButton" @click="() => lol()">Vote</VBtn>
+        <VBtn class="VoteButton" @click="() => voteForProposal()">Vote</VBtn>
       </div>
     </v-card-actions>
   </v-card>
@@ -55,11 +52,17 @@ export default {
   flex-direction: row;
 }
 
+.title {
+  font-size: 3vh;
+}
+
 .Description {
-  padding: 15px 0px 15px 0px;
+  padding: 0px 3vh 0px 0px;
+  font-size: 2vh;
 }
 
 .VoteButton {
   align-self: center;
+  font-size: 2vh;
 }
 </style>
