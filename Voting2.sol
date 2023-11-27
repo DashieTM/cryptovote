@@ -1,12 +1,17 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
+struct Proposal {
+    string name;
+    uint voteCount; // number of accumulated votes
+}
+
 /**
  * @title BallotManager
  * @dev Manages multiple instances of the Ballot contract
  */
 contract BallotManager {
-    event BallotCreated(address indexed ballotAddress);
+    event BallotCreated(address indexed creator, address indexed ballotAddress, Proposal[] indexed proposals);
     address[] public ballots;
 
     /**
@@ -14,10 +19,10 @@ contract BallotManager {
      * @param proposalNames Names of proposals for the new ballot
      * @return address Address of the created ballot
      */
-    function createBallot(string[] memory proposalNames) public returns (address) {
-        Ballot newBallot = new Ballot(proposalNames, msg.sender);
+    function createBallot(string memory name, string[] memory proposalNames) public returns (address) {
+        Ballot newBallot = new Ballot(name, proposalNames, msg.sender);
         ballots.push(address(newBallot));
-        emit(BallotCreated(address(newBallot)));
+        emit BallotCreated(msg.sender, address(newBallot), newBallot.getProposals());
         return address(newBallot);
     }
 
@@ -35,6 +40,9 @@ contract BallotManager {
  * @dev Implements voting process along with vote delegation
  */
 contract Ballot {
+    event VoteGiven(address indexed owner, address indexed ballotAddress, address indexed recipient);
+    event VoteDelegated(address indexed owner, address indexed ballotAddress, address indexed recipient);
+    event Voted(address indexed voter, address indexed ballotAddress, uint proposal);
 
     struct Voter {
         uint weight; // weight is accumulated by delegation
@@ -43,10 +51,7 @@ contract Ballot {
         uint vote;   // index of the voted proposal
     }
 
-    struct Proposal {
-        string name;
-        uint voteCount; // number of accumulated votes
-    }
+    string public name;
 
     address public chairperson;
 
@@ -59,7 +64,8 @@ contract Ballot {
      * @param proposalNames Names of proposals
      * @param chairpersonAddress Address of the chairperson
      */
-    constructor(string[] memory proposalNames, address chairpersonAddress) {
+    constructor(string memory ballotName, string[] memory proposalNames, address chairpersonAddress) {
+        name = ballotName;
         chairperson = chairpersonAddress;
         voters[chairperson].weight = 1;
 
@@ -69,6 +75,14 @@ contract Ballot {
                 voteCount: 0
             }));
         }
+    }
+
+    /**
+     * @dev Get the list of all proposals
+     * @return Proposal[] List of proposals
+     */
+    function getProposals() public view returns (Proposal[] memory) {
+        return proposals;
     }
 
     /** 
@@ -86,6 +100,7 @@ contract Ballot {
         );
         require(voters[voter].weight == 0);
         voters[voter].weight = 1;
+        emit VoteGiven(msg.sender, address(this), voter);
     }
 
     /**
@@ -115,6 +130,7 @@ contract Ballot {
             // add to her weight.
             delegate_.weight += sender.weight;
         }
+        emit VoteDelegated(msg.sender, address(this), to);
     }
 
     /**
@@ -132,6 +148,7 @@ contract Ballot {
         // this will throw automatically and revert all
         // changes.
         proposals[proposal].voteCount += sender.weight;
+        emit Voted(msg.sender, address(this), proposal);
     }
 
     /** 
