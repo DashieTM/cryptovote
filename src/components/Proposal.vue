@@ -60,6 +60,7 @@ export default {
 
 .title {
   font-size: 1.5rem;
+  padding: 0px;
   text-wrap: wrap;
 }
 
