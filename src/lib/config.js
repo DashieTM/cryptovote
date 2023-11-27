@@ -300,7 +300,8 @@ export const ballotManagerAbi = [
         "name": "",
         "type": "uint256"
       }
-    ], "name": "ballots",
+    ],
+    "name": "ballots",
     "outputs": [
       {
         "internalType": "address",

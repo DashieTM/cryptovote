@@ -30,7 +30,7 @@ function submit() {
   createBallot(ballot_name.value, proposal_names.value).then((receipt) => {
     if (!receipt.status) {
       console.log("error bro");
-    } else if(!voters.value.empty()){
+    } else if(!voters.value.length == 0){
       for (let voter in voters){
         giveRightToVote(receipt.address, voter);
       }  

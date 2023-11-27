@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { connectMetaMaskAccount, getBalance, hasAccountPermissions, createBallot, getBallots, giveRightToVote, vote, delegateVote, getProposals, getWinningProposal } from '../lib/api.js';
+import { connectMetaMaskAccount, getBalance,getLogs, getLogsOfBallot, hasAccountPermissions, createBallot, getBallots, giveRightToVote, vote, delegateVote, getProposals, getWinningProposal } from '../lib/api.js';
 import { ref, onMounted } from 'vue';
 const balance: Number = ref(0);
 onMounted(() => {
   getBalance().then((new_balance: number) => {
-    if(new_balance === -1) {
+    if (new_balance === -1) {
       connectMetaMaskAccount();
       return;
     }
@@ -23,12 +23,16 @@ onMounted(() => {
     <v-btn
       @click="() => giveRightToVote('0xd6B29D8aa6EF02545141FA8366cA864aC53e8Cc6', '0x189794Ed416b5065375e8A648F25Ac01Adaee240')">Give
       right to vote to Voter 1 on ballot FirstBallot</v-btn>
+    <!-- <v-btn @click="() => getLogsOfBallot('')"> -->
+    <!--   getpastballot</v-btn> -->
+    <v-btn @click="() => getLogs()">
+      getpast</v-btn>
   </v-card>
 </template>
 
 <style scoped>
 h1 {
- margin: 2rem 0rem 2rem 0rem; 
+  margin: 2rem 0rem 2rem 0rem;
 }
 
 .home {
