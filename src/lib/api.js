@@ -176,21 +176,25 @@ export const getWinningProposal = async (ballotAddress) => {
 export const getLogsOfBallot = async (ballotAddress) => {
   try {
     const ballotContract = new web3.eth.Contract(ballotAbi, ballotAddress);
-    ballotContract.getPastEvents('allEvents').then(function(events) {
-      console.log(events)
-    });
+    const result = await web3.eth.getBlockNumber();
+    console.log(result);
+    if (result !== null) {
+      const events = await ballotContract.getPastEvents("allEvents", { fromBlock: result - 1000n, toBlock: result }).then((geil) => { return geil; });
+      console.log(events);
+      return events;
+    }
+    return [];
   } catch (error) {
     console.error('getWinningProposal error', error);
+    return [];
   }
 }
 
 export const getLogs = async () => {
   try {
     const result = await web3.eth.getBlockNumber();
-    console.log(result);
     if (result !== null) {
       const events = await ballotManagerContract.getPastEvents("allEvents", { fromBlock: result - 1000n, toBlock: result }).then((geil) => { return geil; });
-      console.log(events);
       return events;
     }
     return [];

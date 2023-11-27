@@ -26,7 +26,13 @@ const { event_type, from_address, on_address, to_address } = defineProps(['event
       {{ from_address }}
     </div>
     <div class="text">
-      voted on ballot
+      voted for 
+    </div>
+    <div class="address">
+      {{ to_address }}
+    </div>
+    <div class="text">
+      on ballot 
     </div>
     <div class="address">
       {{ on_address }}

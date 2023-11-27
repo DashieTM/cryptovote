@@ -18,19 +18,21 @@ function setup() {
     for (let event of events) {
       ballotEvents.value.push(createEvent(event));
     }
-    console.log(ballotEvents);
   });
   getBallots().then((data) => {
     for (let index = 0; index < data.length; index++) {
       const element = data[index];
       getLogsOfBallot(element.address).then((events) => {
-        let eventArray: Event[];
-        for (let event in events) {
-          eventArray.push(createEvent(event));
+        let eventArray = [];
+        if (events.length !== 0) {
+          for (let event of events) {
+            eventArray.push(createEvent(event));
+          }
         }
+        console.log(eventArray);
         ballotsArray.value.push({
           name: element.name,
-          events: events,
+          events: eventArray,
         });
         done.value += 1;
         if (done == data.length) {
@@ -44,23 +46,53 @@ function setup() {
 </script>
 
 <template id="Audit">
-  <v-container fluid>
-    <v-row dense>
-      <v-col cols="12">
-        <Proposal proposal_name="Ballot Manager"></Proposal>
+  <v-container class="container" fluid>
+    <v-col cols="12">
+      <v-card>
+        <div class="entry">Ballot Manager</div>
+        <div v-if="ballotEvents.length === 0">
+          <div class="text">No Events</div>
+        </div>
         <div v-for="event in ballotEvents" class="events">
           <EventEntry :event_type="Number(event.type)" :from_address="event.from_address" :on_address="event.on_address"
             :to_address="event.to_address"></EventEntry>
         </div>
-      </v-col>
-      <v-col v-for="n in ballotsArray" cols="12">
-        <Proposal :proposal_name="n.name"></Proposal>
-        <div class="events" v-for="event in n.events">
-          <EventEntry :event="event"></EventEntry>
+      </v-card>
+    </v-col>
+    <div class="ballot">
+      Ballot Events
+    </div>
+    <v-col v-for="n in ballotsArray" cols="12">
+      <v-card>
+        <div class="entry">{{ n.name }}</div>
+        <div v-if="n.events.length === 0">
+          <div class="text">No Events</div>
         </div>
-      </v-col>
-    </v-row>
+        <div class="events" v-for="event in n.events">
+          <EventEntry :event_type="Number(event.type)" :from_address="event.from_address" :on_address="event.on_address"
+            :to_address="event.to_address"></EventEntry>
+        </div>
+      </v-card>
+    </v-col>
   </v-container>
 </template>
 
-<style scoped></style>
+<style scoped>
+.ballot {
+  font-size: 2rem;
+  margin: 1rem;
+}
+
+.entry {
+  font-size: 1.5rem;
+  margin: 1rem;
+}
+
+.container {
+  margin-bottom: 2rem;
+}
+
+.text {
+  margin-left: 1rem;
+}
+</style>
