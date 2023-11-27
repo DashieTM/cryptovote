@@ -49,7 +49,7 @@ export default {
 
 <template id="Ballots">
   <div v-if="fetching" class="loading">Loading...</div>
-  <div v-else="" class="ballots">
+  <v-container v-else="" class="ballots" fluid>
     <v-card v-for="(ballot) in ballots" :key="ballot" cols="12" class="ballot">
       <div class="title">{{ ballot.name }}</div>
       <div v-for="(proposal, index) in ballot.proposals" :key="proposal" cols="12">
@@ -57,7 +57,7 @@ export default {
           proposal_description="description" :can_vote="true"></Proposal>
       </div>
     </v-card>
-  </div>
+  </v-container>
 </template>
 
 <style scoped>
@@ -70,6 +70,8 @@ export default {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  margin-bottom: 2rem;
+  overflow-y: scroll;
 }
 
 .proposal{

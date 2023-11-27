@@ -14,6 +14,6 @@ import Navigation from "./components/Navigation.vue";
 
 <style scoped>
 .body {
-  height: 90%;
+  height: 95%;
 }
 </style>
