@@ -70,10 +70,10 @@ function submit() {
 }
 
 .input {
-  margin: 2vh;
+  margin: 1rem;
 }
 
 .button {
-  margin: 2vh;
+  margin: 1rem;
 }
 </style>

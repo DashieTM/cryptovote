@@ -28,11 +28,11 @@ onMounted(() => {
 
 <style scoped>
 h1 {
- margin: 2vh 0vh 2vh 0vh; 
+ margin: 2rem 0rem 2rem 0rem; 
 }
 
 .home {
-  margin: 2vh;
+  margin: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,15 +40,15 @@ h1 {
 }
 
 .mdi {
-  font-size: 20vh;
+  font-size: 20rem;
 }
 
 .text {
-  font-size: 2.5vh;
+  font-size: 2.5rem;
 }
 
 .balance {
-  margin: 1vh 0vh 1vh 0vh;
-  font-size: 3.5vh;
+  margin: 1rem 0rem 1rem 0rem;
+  font-size: 3.5rem;
 }
 </style>

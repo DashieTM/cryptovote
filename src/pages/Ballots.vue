@@ -62,8 +62,8 @@ export default {
 
 <style scoped>
 .title {
-  font-size: 4vh;
-  margin-left: 2vh;
+  font-size: 3rem;
+  margin-left: 2rem;
 }
 
 .ballots {
@@ -73,10 +73,10 @@ export default {
 }
 
 .proposal{
-  margin: 2vh;
+  margin: 1rem;
 }
 
 .ballot {
-  margin: 1vh;
+  margin: 1rem;
 }
 </style>

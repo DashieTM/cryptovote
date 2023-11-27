@@ -38,7 +38,7 @@ export default {
     <v-card-title class="title">{{ proposal_name }}</v-card-title>
     <VSpacer></VSpacer>
     <v-card-actions>
-    <v-card-text class="Description">{{ vote_count }}</v-card-text>
+      <v-card-text class="Description">{{ vote_count }}</v-card-text>
       <div class="Vote" v-if="can_vote">
         <VBtn class="VoteButton" @click="() => voteForProposal()">Vote</VBtn>
       </div>
@@ -47,22 +47,29 @@ export default {
 </template>
 
 <style scoped>
+@media (max-width: 700px) {
+  .Vote {
+    flex-direction: column !important;
+  }
+}
+
 .Vote {
   display: flex;
   flex-direction: row;
 }
 
 .title {
-  font-size: 3vh;
+  font-size: 1.5rem;
+  text-wrap: wrap;
 }
 
 .Description {
-  padding: 0px 3vh 0px 0px;
-  font-size: 2vh;
+  padding: 0px 3rem 0px 0px;
+  font-size: 1.5rem;
 }
 
 .VoteButton {
   align-self: center;
-  font-size: 2vh;
+  font-size: 1.2rem;
 }
 </style>
