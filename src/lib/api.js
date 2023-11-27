@@ -65,13 +65,16 @@ export const getBalance = async () => {
 }
 
 export const createBallot = async (ballotName, proposalNames) => {
+  await ballotManagerContract.once('BallotCreated', {}, function(error, event) {
+    console.log(event);
+    ballotAddress = event.ballotAddress;
+  });
   try {
+    let ballotAddress;
     const account = await getAccount();
     const receipt = await ballotManagerContract.methods.createBallot(ballotName, proposalNames).send({ from: account });
     console.log(receipt);
     if (receipt.status) {
-      const ballotCreatedEvent = receipt.events.BallotCreated.returnValues;
-      const ballotAddress = ballotCreatedEvent.ballotAddress;
       return {
         status: true,
         address: ballotAddress
@@ -183,22 +186,16 @@ export const getLogsOfBallot = async (ballotAddress) => {
 
 export const getLogs = async () => {
   try {
-    const ballotContract = new web3.eth.Contract(ballotAbi, ballotManagerAddress);
-    console.log(ballotManagerAddress);
-    // ballotContract.getPastEvents('allEvents').then(function(events) {
-    //   console.log(events)
-    // });
-    ballotContract.getPastEvents('allEvents', {
-      fromBlock: 0,
-      toBlock: 'latest'
-    }, function(error, events) {
-      console.log("greneng");
+    const result = await web3.eth.getBlockNumber();
+    console.log(result);
+    if (result !== null) {
+      const events = await ballotManagerContract.getPastEvents("allEvents", { fromBlock: result - 1000n, toBlock: result }).then((geil) => { return geil; });
       console.log(events);
-    });
-    // ballotContract.events.allEvents({}, (event) => {
-    //   console.log(event);
-    // });
+      return events;
+    }
+    return [];
   } catch (error) {
     console.error('getWinningProposal error', error);
+    return [];
   }
 }

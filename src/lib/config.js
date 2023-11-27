@@ -258,7 +258,8 @@ export const ballotManagerAddress = '0x75bf581fb206F6d62769E2e6c5c5158D6c361a4E'
 
 export const ballotManagerAbi = [
   {
-    "anonymous": false, "inputs": [
+    "anonymous": false,
+    "inputs": [
       {
         "indexed": true,
         "internalType": "address",
@@ -369,15 +370,18 @@ export const ballotAbi = [
         "name": "chairpersonAddress",
         "type": "address"
       }
-    ], "stateMutability": "nonpayable",
+    ],
+    "stateMutability": "nonpayable",
     "type": "constructor"
-  }, {
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
         "indexed": true,
         "internalType": "address",
-        "name": "owner", "type": "address"
+        "name": "owner",
+        "type": "address"
       },
       {
         "indexed": true,
@@ -394,7 +398,8 @@ export const ballotAbi = [
     ],
     "name": "VoteDelegated",
     "type": "event"
-  }, {
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -425,19 +430,24 @@ export const ballotAbi = [
       {
         "indexed": true,
         "internalType": "address",
-        "name": "voter", "type": "address"
+        "name": "voter",
+        "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "ballotAddress", "type": "address"
+        "name": "ballotAddress",
+        "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "proposal", "type": "uint256"
+        "name": "proposal",
+        "type": "uint256"
       }
-    ], "name": "Voted", "type": "event"
+    ],
+    "name": "Voted",
+    "type": "event"
   },
   {
     "inputs": [],
@@ -445,9 +455,11 @@ export const ballotAbi = [
     "outputs": [
       {
         "internalType": "address",
-        "name": "", "type": "address"
+        "name": "",
+        "type": "address"
       }
-    ], "stateMutability": "view",
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -457,7 +469,8 @@ export const ballotAbi = [
         "name": "to",
         "type": "address"
       }
-    ], "name": "delegate",
+    ],
+    "name": "delegate",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -583,7 +596,8 @@ export const ballotAbi = [
     ],
     "stateMutability": "view",
     "type": "function"
-  }, {
+  },
+  {
     "inputs": [],
     "name": "winnerName",
     "outputs": [

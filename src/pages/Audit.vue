@@ -15,9 +15,10 @@ onMounted(() => {
 
 function setup() {
   getLogs().then((events) => {
-    // for (let event of events) {
-    //   ballotEvents.value.push(createEvent(event));
-    // }
+    for (let event of events) {
+      ballotEvents.value.push(createEvent(event));
+    }
+    console.log(ballotEvents);
   });
   getBallots().then((data) => {
     for (let index = 0; index < data.length; index++) {
@@ -47,8 +48,9 @@ function setup() {
     <v-row dense>
       <v-col cols="12">
         <Proposal proposal_name="Ballot Manager"></Proposal>
-        <div v-for="n in ballotEvents" class="events">
-
+        <div v-for="event in ballotEvents" class="events">
+          <EventEntry :event_type="Number(event.type)" :from_address="event.from_address" :on_address="event.on_address"
+            :to_address="event.to_address"></EventEntry>
         </div>
       </v-col>
       <v-col v-for="n in ballotsArray" cols="12">
