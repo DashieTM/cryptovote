@@ -6,23 +6,80 @@ onMounted(() => {
   console.log(on_address);
   console.log(to_address);
 });
-const event_type = ref(0);
-const from_address = ref("");
-const on_address = ref("");
-const to_address = ref("");
+const { event_type, from_address, on_address, to_address } = defineProps(['event_type', 'from_address', 'on_address', 'to_address']);
 </script>
 
 <template id="EventEntry">
   <v-col v-if="event_type === 0" cols="12" md="10" lg="8">
-    {{ from_address }} created the ballot {{ on_address }}
+    <div class="address">
+      {{ from_address }}
+    </div>
+    <div class="text">
+      created the ballot
+    </div>
+    <div class="address">
+      {{ on_address }}
+    </div>
   </v-col>
-  <v-col v-if="event_type == 1" cols="12" md="10" lg="8">
-    {{ from_address }} voted on ballot {{ on_address }}
+  <v-col v-else-if="event_type == 1" cols="12" md="10" lg="8">
+    <div class="address">
+      {{ from_address }}
+    </div>
+    <div class="text">
+      voted on ballot
+    </div>
+    <div class="address">
+      {{ on_address }}
+    </div>
   </v-col>
-  <v-col v-if="event_type == 2" cols="12" md="10" lg="8">
-    {{ from_address }} gave the right to vote on ballot {{ on_address }} to {{ to_address }}
+  <v-col v-else-if="event_type == 2" cols="12" md="10" lg="8">
+    <div class="address">
+      {{ from_address }}
+    </div>
+    <div class="text">
+      gave voting rights on
+    </div>
+    <div class="address">
+      {{ on_address }}
+    </div>
+    <div class="text">
+      to
+    </div>
+    <div class="address">
+      {{ on_address }}
+    </div>
   </v-col>
-  <v-col v-if="event_type == 3" cols="12" md="10" lg="8">
-    {{ from_address }} delegated their vote on {{ on_address }} to {{ to_address }}
+  <v-col v-else-if="event_type == 3" cols="12" md="10" lg="8">
+    <div class="address">
+      {{ from_address }}
+    </div>
+    <div class="text">
+      delegated their vote on
+    </div>
+    <div class="address">
+      {{ on_address }}
+    </div>
+    <div class="text">
+      to
+    </div>
+    <div class="address">
+      {{ on_address }}
+    </div>
+  </v-col>
+  <v-col v-else>
+    <div class="text">
+      Unknown Event
+    </div>
   </v-col>
 </template>
+<style scope>
+.text {
+  font-size: 1.1rem;
+  color: orange;
+}
+
+.address {
+  word-wrap: break-word;
+  font-size: 1.1rem;
+}
+</style>
