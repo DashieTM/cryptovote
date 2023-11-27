@@ -20,9 +20,6 @@ onMounted(() => {
     <span class="mdi mdi-ethereum"></span>
     <div class="text">Your current balance to waste</div>
     <div class="balance">{{ balance }}</div>
-    <v-btn
-      @click="() => giveRightToVote('0xd6B29D8aa6EF02545141FA8366cA864aC53e8Cc6', '0x189794Ed416b5065375e8A648F25Ac01Adaee240')">Give
-      right to vote to Voter 1 on ballot FirstBallot</v-btn>
   </div>
 </template>
 
