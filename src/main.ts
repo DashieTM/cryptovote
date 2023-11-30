@@ -19,7 +19,7 @@ const tokyoNight = {
   dark: true,
   colors: {
     background: '#1A1B26',
-    surface: '#1A1B26',
+    surface: '#351A97',
     primary: '#1A1B26',
     secondary: '#a9b1d6',
     error: '#F28B82',

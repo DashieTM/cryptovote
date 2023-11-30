@@ -27,7 +27,7 @@ function toggleTheme() {
     <VList>
       <VListItem title="Home" to="/"></VListItem>
       <VListItem title="Ballots" to="/Ballots"></VListItem>
-      <VListItem title="Create New Proposal" to="/NewProposal"></VListItem>
+      <VListItem title="Create New Ballot" to="/NewProposal"></VListItem>
       <VListItem title="Audit" to="/Audit"></VListItem>
     </VList>
   </VNavigationDrawer>
