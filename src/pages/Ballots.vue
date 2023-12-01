@@ -57,7 +57,7 @@ async function fetchProposals() {
     }
   }
   subscribeBallotEvents(addresses, ballotFunction);
-  subscribeBallotEvents(globalFunction);
+  subscribeEvents(globalFunction);
 }
 
 onBeforeMount(() => {
