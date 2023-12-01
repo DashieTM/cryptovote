@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import Proposal from './../components/Proposal.vue';
 import { getBallots, getLogsOfBallot, getLogs } from './../lib/api.js';
-import { createEvent, Event } from './../lib/types.ts';
+import { createEvent } from './../lib/types.ts';
 import { ref, onMounted } from 'vue';
 import EventEntry from '../components/EventEntry.vue';
+import Loading from '../components/Loading.vue';
 
+const loadingLogs = ref(false);
+const loadingBallots = ref(false);
 const done = ref(0);
 const ballotsArray = ref([]);
 const ballotEvents = ref([]);
@@ -14,10 +16,13 @@ onMounted(() => {
 });
 
 function setup() {
+  loadingLogs.value = true;
+  loadingBallots.value = true;
   getLogs().then((events) => {
     for (let event of events) {
       ballotEvents.value.push(createEvent(event));
     }
+    loadingLogs.value = false;
   });
   getBallots().then((data) => {
     for (let index = 0; index < data.length; index++) {
@@ -41,13 +46,15 @@ function setup() {
         }
       })
     }
+    loadingBallots.value = false;
   });
 }
 </script>
 
 <template id="Audit">
   <v-container class="container" fluid>
-    <v-col cols="12">
+    <Loading v-if="loadingLogs" :color="'white'" :size="70"/>
+    <v-col v-else cols="12">
       <v-card>
         <div class="entry">Ballot Manager</div>
         <div v-if="ballotEvents.length === 0">
@@ -62,7 +69,8 @@ function setup() {
     <div class="ballot">
       Ballot Events
     </div>
-    <v-col v-for="n in ballotsArray" cols="12">
+    <Loading v-if="loadingBallots" :color="'white'" :size="70"/>
+    <v-col v-else v-for="n in ballotsArray" cols="12">
       <v-card>
         <div class="entry">{{ n.name }}</div>
         <div v-if="n.events.length === 0">
