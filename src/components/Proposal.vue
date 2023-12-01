@@ -1,30 +1,57 @@
 <script setup lang="ts">
-import { vote } from '../lib/api.js';
+import { vote, hasRightToVote, hasVoted } from '../lib/api.js';
 import { ref, onMounted } from 'vue';
+import { useNotification } from '@kyvg/vue3-notification';
+
+import Loading from '../components/Loading.vue';
+
+const { notify } = useNotification();
 
 const props = defineProps({
   proposal_name: String,
   vote_count: Number,
-  address: String,
-  index: Number,
-  can_vote: Boolean,
-  is_ballot: Boolean,
+  ballot_address: String,
+  index: Number
 });
 
 const emit = defineEmits(["proposalUpdate"]);
 
-const voteAvailable = ref(true);
+const loading = ref(false);
+const canVote = ref(false);
 
 onMounted(() => {
+  checkVotePermission();
   emit("proposalUpdate");
 });
 
-const voteForProposal = () => {
-  voteAvailable.value = false;
-  vote(props.address, props.index).then((success: boolean) => {
+async function checkVotePermission() {
+  loading.value = true;
+  
+  const hasVotePermission = await hasRightToVote(props.ballot_address);
+  const hasAlreadyVoted = await hasVoted(props.ballot_address);
+
+  if (hasVotePermission && !hasAlreadyVoted) {
+    canVote.value = true;
+  }
+
+  loading.value = false;
+}
+
+async function voteForProposal() {
+  loading.value = true;
+  vote(props.ballot_address, props.index).then((success: boolean) => {
     if (!success) {
-      voteAvailable.value = true;
+      notify({
+          text: `Successfully voted`,
+          type: 'success'
+        });
+    } else {
+      notify({
+          text: 'Could not vote',
+          type: 'error'
+        });
     }
+    loading.value = false;
   });
 };
 </script>
@@ -41,8 +68,11 @@ const voteForProposal = () => {
 
       <v-card-text class="Description">{{ vote_count }}</v-card-text>
 
-      <div class="Vote" v-if="can_vote">
-        <VBtn class="VoteButton" @click="() => voteForProposal()">Vote</VBtn>
+      <div class="Vote">
+        <VBtn class="VoteButton" :disabled="!canVote" @click="() => voteForProposal()">
+          <Loading v-if="loading" :size="25" :color="'primary'"/>
+          <div v-else>VOTE</div>
+        </VBtn>
       </div>
 
     </v-card-actions>

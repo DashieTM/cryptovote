@@ -1,15 +1,13 @@
 <template>
     <div class="text-center">
-        <v-progress-circular :size="props.size" indeterminate color="white"/>
+        <v-progress-circular :size="props.size" indeterminate :color="color"/>
     </div>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({ size: Number });
+const props = defineProps({ size: Number, color: String });
 </script>
 
 <style scoped>
-    div {
-        margin-top: 4rem;
-    }
+
 </style>

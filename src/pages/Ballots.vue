@@ -40,7 +40,7 @@ onBeforeMount(() => {
 </script>
 
 <template id="Ballots">
-  <Loading v-if="loading" :size="70"/>
+  <Loading v-if="loading" :size="70" class="mt-10"/>
 
   <v-container v-else class="ballots" fluid>
 
@@ -55,11 +55,11 @@ onBeforeMount(() => {
 
         <Proposal class="proposal"
                   :proposal_name="proposal.name"
-                  :address="ballot.address"
+                  :ballot_address="ballot.address"
                   :vote_count="proposal.voteCount"
                   :index="index"
                   proposal_description="description"
-                  :can_vote="true"/>
+                  />
 
       </div>
 
