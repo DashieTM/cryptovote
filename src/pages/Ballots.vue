@@ -39,14 +39,19 @@ onBeforeMount(() => {
 
 <template id="Ballots">
   <Loading v-if="loading"/>
-  <v-container v-else="" class="ballots" fluid>
+
+  <v-container v-else class="ballots" fluid>
+
     <v-card v-for="(ballot) in ballots" cols="12" class="ballot">
+
       <div class="title">{{ ballot.name }}</div>
       <div v-for="(proposal, index) in ballot.proposals" cols="12">
         <Proposal class="proposal" :proposal_name="proposal.name" :address="ballot.address" :vote_count="proposal.voteCount" :index="index"
           proposal_description="description" :can_vote="true"></Proposal>
       </div>
+      
     </v-card>
+
   </v-container>
 </template>
 

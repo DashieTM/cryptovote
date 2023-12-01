@@ -12,7 +12,7 @@ export default {
   },
   props: {
     proposal_name: String,
-    vote_count: BigInt,
+    vote_count: Number,
     address: String,
     index: Number,
     can_vote: Boolean,
@@ -34,16 +34,25 @@ export default {
 </script>
 
 <template id="Proposal">
+
   <v-card class="Vote">
+
     <v-card-title class="title">{{ proposal_name }}</v-card-title>
-    <VSpacer></VSpacer>
+
+    <VSpacer/>
+
     <v-card-actions>
+
       <v-card-text class="Description">{{ vote_count }}</v-card-text>
+      
       <div class="Vote" v-if="can_vote">
         <VBtn class="VoteButton" @click="() => voteForProposal()">Vote</VBtn>
       </div>
+
     </v-card-actions>
+
   </v-card>
+
 </template>
 
 <style scoped>

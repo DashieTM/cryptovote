@@ -4,6 +4,8 @@ import { createBallot } from '../lib/api.js';
 import { ref } from 'vue';
 import { useSnackbar } from '../composables/useSnackbar';
 
+import Loading from '../components/Loading.vue';
+
 const { showSnackbar } = useSnackbar();
 const loading = ref(false);
 const ballot_name = ref('');
@@ -78,7 +80,9 @@ async function submit(event) {
 </script>
 
 <template id="NewBallot">
-  <v-form v-on:submit.prevent="submit" class="form">
+  <Loading v-if="loading"/>
+  
+  <v-form v-else v-on:submit.prevent="submit" class="form">
 
     <v-text-field class="input" v-model="ballot_name" :rules="ballot_name_rule" :counter="30" label="Ballot Name" required/>
 
