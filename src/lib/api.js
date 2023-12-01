@@ -91,7 +91,7 @@ export const getBallots = async () => {
 
       ballots.push({ name: name, address: ballotAddress });
     }
-    return ballots;
+    return ballots.reverse();
 
   } catch (error) {
     console.error('getBallots error', error);
