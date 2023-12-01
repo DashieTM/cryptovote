@@ -32,7 +32,7 @@ export function createEvent(event) {
       type: EventTypes.VotedEvent,
       from_address: event.returnValues.voter,
       on_address: event.returnValues.ballotAddress,
-      to_address: String(event.returnValues.proposal),
+      to_address: event.returnValues.proposal,
     }
   }
   if (event.event == "VoteGiven") {
