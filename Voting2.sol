@@ -42,7 +42,7 @@ contract BallotManager {
 contract Ballot {
     event VoteGiven(address indexed owner, address indexed ballotAddress, address indexed recipient);
     event VoteDelegated(address indexed owner, address indexed ballotAddress, address indexed recipient);
-    event Voted(address indexed voter, address indexed ballotAddress, uint proposal);
+    event Voted(address indexed voter, address indexed ballotAddress, string proposal);
 
     struct Voter {
         uint weight; // weight is accumulated by delegation
@@ -148,7 +148,7 @@ contract Ballot {
         // this will throw automatically and revert all
         // changes.
         proposals[proposal].voteCount += sender.weight;
-        emit Voted(msg.sender, address(this), proposal);
+        emit Voted(msg.sender, address(this), proposals[proposal].name);
     }
 
     /** 
