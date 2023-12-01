@@ -91,7 +91,6 @@ export const getBallots = async () => {
 
       ballots.push({ name: name, address: ballotAddress });
     }
-    console.log(ballots); // TODO remove
     return ballots;
 
   } catch (error) {
@@ -121,7 +120,6 @@ export const vote = async (ballotAddress, proposal) => {
     return receipt.status > 0 ? true : false;
 
   } catch (error) {
-    // TODO: implement proper error handling with the reason of transaction revert
     console.error('vote error', error);
   }
 }
@@ -136,6 +134,42 @@ export const delegateVote = async (ballotAddress, to) => {
 
   } catch (error) {
     console.error('delegateVote error', error.message);
+  }
+}
+
+export const isChairperson = async (ballotAddress) => {
+  try {
+      const account = await getAccount();
+      const ballotContract = new web3.eth.Contract(ballotAbi, ballotAddress);
+      const chairperson = await ballotContract.methods.chairperson().call();
+
+      return chairperson === account;
+  } catch (error) {
+    console.log('isChairperson error', error);
+  }
+}
+
+export const hasRightToVote = async (ballotAddress) => {
+  try {
+      const account = await getAccount();
+      const ballotContract = new web3.eth.Contract(ballotAbi, ballotAddress);
+      const voter = await ballotContract.methods.voters(account).call();
+      
+      return voter.weight > 0;
+  } catch (error) {
+      console.error('hasRightToVote error', error);
+  }
+}
+
+export const hasVoted = async (ballotAddress) => {
+  try {
+      const account = await getAccount();
+      const ballotContract = new web3.eth.Contract(ballotAbi, ballotAddress);
+      const voter = await ballotContract.methods.voters(account).call();
+      
+      return voter.voted;
+  } catch (error) {
+      console.error('hasVoted error', error);
   }
 }
 
