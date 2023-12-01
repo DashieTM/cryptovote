@@ -36,25 +36,10 @@ const proposal_name_rule = [
     return true;
   }
 ];
-// const voter_rule = [
-//   (value: String) => {
-//     if (!value) {
-//       return true;
-//     } else {
-//       const regex = /^0x[a-fA-F0-9]{40}$/;
-//       if (regex.test(String(value))) return true;
-//       return 'This address is not in a valid format';
-//     }
-//   }
-// ];
 
 function addProposal() {
   proposal_count.value += 1;
 }
-
-// function addVoter() {
-//   voter_count.value += 1;
-// }
 
 async function submit(event) {
   loading.value = true;

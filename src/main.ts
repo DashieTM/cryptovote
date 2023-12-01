@@ -14,7 +14,6 @@ import Home from './pages/Home.vue';
 import NewBallot from './pages/NewBallot.vue';
 import Ballots from './pages/Ballots.vue';
 import { hasAccountPermissions, connectMetaMaskAccount } from './lib/api.js';
-import NewBallotVue from "./pages/NewBallot.vue";
 
 const tokyoNight = {
   dark: true,

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, onBeforeMount } from 'vue';
+
 import Proposal from '../components/Proposal.vue';
 import Loading from '../components/Loading.vue';
+import BallotActions from '../components/BallotActions.vue';
 
 import { getBallots, getProposals } from '../lib/api.js';
 import { BallotType } from '../lib/types.ts';
@@ -46,7 +48,7 @@ onBeforeMount(() => {
 
       <div class="ballot-header">
         <p class="title">{{ ballot.name }}</p>
-        <v-btn class="settings"></v-btn>
+        <BallotActions :ballot_address="ballot.address"/>
       </div>
       
       <div v-for="(proposal, index) in ballot.proposals" cols="12">
@@ -67,10 +69,6 @@ onBeforeMount(() => {
 </template>
 
 <style scoped>
-.settings {
-  margin-right: 1rem;
-}
-
 .ballot-header {
   display: flex;
   flex-direction: row;

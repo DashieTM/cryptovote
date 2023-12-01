@@ -44,7 +44,7 @@ export default {
     <v-card-actions>
 
       <v-card-text class="Description">{{ vote_count }}</v-card-text>
-      
+
       <div class="Vote" v-if="can_vote">
         <VBtn class="VoteButton" @click="() => voteForProposal()">Vote</VBtn>
       </div>
