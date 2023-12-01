@@ -5,17 +5,41 @@ import Proposal from '../components/Proposal.vue';
 import Loading from '../components/Loading.vue';
 import BallotActions from '../components/BallotActions.vue';
 
-import { getBallots, getProposals } from '../lib/api.js';
+import { getBallots, getProposals, subscribeEvents, subscribeBallotEvents } from '../lib/api.js';
 import { BallotType } from '../lib/types.ts';
 
 
 const loading = ref(false);
 const ballots = ref<BallotType[] | null>(null);
+async function globalFunction(event) {
+  console.log(event);
+  // TODO create new ballot when this fires
+  // TODO subscribe and unsubscribe properly
+}
+
+async function ballotFunction(event) {
+  for(let ballot of ballots.value) {
+    if(ballot.address === event.ballotAddress) {
+      for(let proposal of ballot.proposals) {
+        if(proposal.name === event.proposal) {
+          proposal.voteCount += 1n;
+        }
+      } 
+    }
+  }
+}
+
+function eventListener() {
+  subscribeEvents().then((event) => {
+    console.log(event);
+  });
+}
 
 async function fetchProposals() {
   loading.value = true;
   const data = await getBallots();
   let ballotsArray: BallotType[] = [];
+  let addresses: String[] = [];
   let done = 0;
 
   for (const element of data) {
@@ -25,12 +49,15 @@ async function fetchProposals() {
       address: element.address,
       proposals,
     });
+    addresses.push(element.address);
     done += 1;
     if (done === data.length) {
       loading.value = false;
       ballots.value = ballotsArray;
     }
   }
+  subscribeBallotEvents(addresses, ballotFunction);
+  subscribeBallotEvents(globalFunction);
 }
 
 onBeforeMount(() => {
