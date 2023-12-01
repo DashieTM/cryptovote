@@ -1,36 +1,32 @@
-<script lang="ts">
+<script setup lang="ts">
 import { vote } from '../lib/api.js';
-export default {
-  data() {
-    return {}
-  },
-  setup(_, ctx) {
-    ctx.emit("proposalUpdate");
-    return {
-      vote,
-    }
-  },
-  props: {
-    proposal_name: String,
-    vote_count: Number,
-    address: String,
-    index: Number,
-    can_vote: Boolean,
-    is_ballot: Boolean,
-  },
-  emits: ["proposalUpdate"],
-  methods: {
-    voteForProposal() {
-      this.vote_available = false;
-      vote(this.address, this.index).then((success: boolean) => {
-        if (!success) {
-          this.vote_available = true;
-        }
-      });
-    }
-  }
+import { ref, onMounted } from 'vue';
 
-}
+const props = defineProps({
+  proposal_name: String,
+  vote_count: Number,
+  address: String,
+  index: Number,
+  can_vote: Boolean,
+  is_ballot: Boolean,
+});
+
+const emit = defineEmits(["proposalUpdate"]);
+
+const voteAvailable = ref(true);
+
+onMounted(() => {
+  emit("proposalUpdate");
+});
+
+const voteForProposal = () => {
+  voteAvailable.value = false;
+  vote(props.address, props.index).then((success: boolean) => {
+    if (!success) {
+      voteAvailable.value = true;
+    }
+  });
+};
 </script>
 
 <template id="Proposal">
