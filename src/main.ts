@@ -11,9 +11,10 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi';
 import "vuetify/styles";
 import Audit from './pages/Audit.vue';
 import Home from './pages/Home.vue';
-import NewProposal from './pages/NewProposal.vue';
+import NewBallot from './pages/NewBallot.vue';
 import Ballots from './pages/Ballots.vue';
 import { hasAccountPermissions, connectMetaMaskAccount } from './lib/api.js';
+import NewBallotVue from "./pages/NewBallot.vue";
 
 const tokyoNight = {
   dark: true,
@@ -32,8 +33,8 @@ const tokyoNight = {
 
 const routes = [
   { path: '/', component: Home },
-  { path: '/NewProposal', component: NewProposal },
   { path: '/Ballots', component: Ballots },
+  { path: '/NewBallot', component: NewBallot },
   { path: '/Audit', component: Audit },
 ];
 
