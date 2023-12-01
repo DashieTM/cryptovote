@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { showWalletWindow } from '../lib/api';
+import { connectMetaMaskAccount } from '../lib/api';
 import { useTheme } from 'vuetify'
 
 const navigation = ref(false);
@@ -19,7 +19,7 @@ function toggleTheme() {
     </div>
     <div class="end-box">
       <v-btn icon="mdi-theme-light-dark" @click="toggleTheme"></v-btn>
-      <v-btn icon="$vuetify" @click="showWalletWindow"></v-btn>
+      <v-btn icon="$vuetify" @click="connectMetaMaskAccount"></v-btn>
     </div>
   </VAppBar>
 

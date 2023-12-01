@@ -12,16 +12,6 @@ if (window.ethereum) {
   console.log('MetaMask is not installed')
 )
 
-export const showWalletWindow = async () => {
-  if (window.ethereum) {
-    try {
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-    } catch (error) {
-      console.log("No compatible wallet installed");
-    }
-  }
-}
-
 export const connectMetaMaskAccount = async () => {
   if (window.ethereum) {
     try {
