@@ -44,18 +44,39 @@ onBeforeMount(() => {
 
     <v-card v-for="(ballot) in ballots" cols="12" class="ballot">
 
-      <div class="title">{{ ballot.name }}</div>
-      <div v-for="(proposal, index) in ballot.proposals" cols="12">
-        <Proposal class="proposal" :proposal_name="proposal.name" :address="ballot.address" :vote_count="proposal.voteCount" :index="index"
-          proposal_description="description" :can_vote="true"></Proposal>
+      <div class="ballot-header">
+        <p class="title">{{ ballot.name }}</p>
+        <v-btn class="settings"></v-btn>
       </div>
       
+      <div v-for="(proposal, index) in ballot.proposals" cols="12">
+
+        <Proposal class="proposal"
+                  :proposal_name="proposal.name"
+                  :address="ballot.address"
+                  :vote_count="proposal.voteCount"
+                  :index="index"
+                  proposal_description="description"
+                  :can_vote="true"/>
+
+      </div>
+
     </v-card>
 
   </v-container>
 </template>
 
 <style scoped>
+.settings {
+  margin-right: 1rem;
+}
+
+.ballot-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .title {
   font-size: 2.5rem;
   margin-left: 1rem;
