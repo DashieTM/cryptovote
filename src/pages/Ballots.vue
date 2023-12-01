@@ -40,9 +40,9 @@ onBeforeMount(() => {
 </script>
 
 <template id="Ballots">
-  <div v-if="!ballots" class="text-center mt-10">No ballots created yet</div>
+  <Loading v-if="loading" :size="70" class="mt-10"/>
 
-  <Loading v-else-if="loading" :size="70" class="mt-10"/>
+  <div v-else-if="!ballots" class="text-center mt-10">No ballots created yet</div>
 
   <v-container v-else class="ballots" fluid>
 
