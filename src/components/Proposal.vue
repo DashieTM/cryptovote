@@ -65,6 +65,7 @@ export default {
 .Vote {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .title {
