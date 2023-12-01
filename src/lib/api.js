@@ -128,7 +128,7 @@ export const delegateVote = async (ballotAddress, to) => {
   try {
     const account = await getAccount();
     const ballotContract = new web3.eth.Contract(ballotAbi, ballotAddress);
-    const receipt = ballotContract.methods.delegate(to).send({ from: account });
+    const receipt = await ballotContract.methods.delegate(to).send({ from: account });
 
     return receipt.status > 0 ? true : false;
 

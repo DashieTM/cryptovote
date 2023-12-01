@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { connectMetaMaskAccount, getBalance, getLogs, getLogsOfBallot, hasAccountPermissions, createBallot, getBallots, giveRightToVote, vote, delegateVote, getProposals, getWinningProposal } from '../lib/api.js';
+import { connectMetaMaskAccount, getBalance } from '../lib/api.js';
 import { ref, onMounted } from 'vue';
 const balance: Number = ref(0);
 onMounted(() => {
@@ -19,7 +19,7 @@ onMounted(() => {
     <h2>Your favorite site for a pump and dump.</h2>
     <span class="mdi mdi-ethereum"></span>
     <div class="text">Your current balance to waste</div>
-    <div class="balance">{{ balance }}</div>
+    <div class="balance">{{ balance }} ETH</div>
   </div>
 </template>
 

@@ -9,7 +9,7 @@ import Navigation from "./components/Navigation.vue";
     <v-main class="body">
       <router-view></router-view>
     </v-main>
-    <notifications position="top center" width="50%" class="mt-2"/>
+    <notifications position="top center" width="40%" class="mt-2"/>
     <VFooter>2023 CryptoScam</VFooter>
   </VApp>
 </template>

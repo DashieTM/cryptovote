@@ -40,7 +40,7 @@ async function checkVotePermission() {
 async function voteForProposal() {
   loading.value = true;
   vote(props.ballot_address, props.index).then((success: boolean) => {
-    if (!success) {
+    if (success) {
       notify({
           text: `Successfully voted`,
           type: 'success'

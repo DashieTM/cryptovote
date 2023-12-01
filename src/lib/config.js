@@ -1,4 +1,4 @@
-export const ballotManagerAddress = '0x563308035D34007C31F246D07E807f68494840FC'
+export const ballotManagerAddress = '0x460700747a992dD9C59Aa57e1b212d7b6B4c68a7'
 
 export const ballotManagerAbi = [
   {

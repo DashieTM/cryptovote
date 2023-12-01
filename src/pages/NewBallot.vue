@@ -72,7 +72,7 @@ async function submit(event) {
 </script>
 
 <template id="NewBallot">
-  <Loading v-if="loading"/>
+  <Loading v-if="loading" :size="70" :color="'white'" class="mt-10"/>
   
   <v-form v-else v-on:submit.prevent="submit" class="form">
 

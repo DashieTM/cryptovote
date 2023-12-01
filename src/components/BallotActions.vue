@@ -14,7 +14,7 @@
                 <div class="actions ma-2">
 
                     <v-btn @click="delegateVoteToTarget" :disabled="!canDelegate">
-                        <Loading v-if="loadingDelegate" :size="20"/>
+                        <Loading v-if="loadingDelegate" :size="25"/>
                         <div v-else-if="canDelegate">
                             Delegate Vote
                         </div>
@@ -24,7 +24,7 @@
                     </v-btn>
 
                     <v-btn @click="giveRightToVoteToTarget" :disabled="!canGiveRightToVote">
-                        <Loading v-if="loadingGiveRightToVote" :size="20"/>
+                        <Loading v-if="loadingGiveRightToVote" :size="25"/>
                         <div v-else-if="canGiveRightToVote">
                             Give right to vote
                         </div>
@@ -36,7 +36,8 @@
                 </div>
 
             </v-form>
-            <Loading v-else :size="20"/>
+
+            <Loading v-else :size="50" class="my-10"/>
             
         </v-card>
     </v-menu>
@@ -106,7 +107,7 @@ async function giveRightToVoteToTarget() {
         giveRightToVote(props.ballot_address, targetAdress.value).then((success) => {
             if (success) {
                 notify({
-                    text: `${targetAdress} is now allowed to vote`,
+                    text: `${targetAdress.value} is now allowed to vote`,
                     type: 'success'
                 });
             } else {
@@ -126,7 +127,7 @@ async function delegateVoteToTarget() {
         delegateVote(props.ballot_address, targetAdress.value).then((success) => {
             if (success) {
                 notify({
-                    text: `Vote was delegated to ${targetAdress}`,
+                    text: `Vote was delegated to ${targetAdress.value}`,
                     type: 'success'
                 });
             } else {
@@ -136,7 +137,7 @@ async function delegateVoteToTarget() {
                 });
             }
             loading.value = false;
-        })
+        });
     }
 }
 
