@@ -47,6 +47,9 @@ import { ref } from 'vue';
 import { isChairperson, hasRightToVote, hasVoted, delegateVote, giveRightToVote } from '../lib/api'
 
 import Loading from './Loading.vue';
+import { useNotification } from '@kyvg/vue3-notification';
+
+const { notify } = useNotification();
 
 const props = defineProps({ ballot_address: String });
 
@@ -102,9 +105,15 @@ async function giveRightToVoteToTarget() {
         loading.value = true;
         giveRightToVote(props.ballot_address, targetAdress.value).then((success) => {
             if (success) {
-                // TODO: implement notification
+                notify({
+                    text: `${targetAdress} is now allowed to vote`,
+                    type: 'success'
+                });
             } else {
-                // TODO: implement notification
+                notify({
+                    text: 'Right to vote could not be granted',
+                    type: 'error'
+                });
             }
             loading.value = false;
         })
@@ -116,9 +125,15 @@ async function delegateVoteToTarget() {
         loading.value = true;
         delegateVote(props.ballot_address, targetAdress.value).then((success) => {
             if (success) {
-                // TODO: implement notification
+                notify({
+                    text: `Vote was delegated to ${targetAdress}`,
+                    type: 'success'
+                });
             } else {
-                // TODO: implement notification
+                notify({
+                    text: 'Vote could not be delegated',
+                    type: 'error'
+                });
             }
             loading.value = false;
         })

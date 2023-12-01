@@ -3,6 +3,11 @@ import { ref } from 'vue';
 import { connectMetaMaskAccount } from '../lib/api';
 import { useTheme } from 'vuetify'
 
+// TODO: remove
+// import { useNotification } from '@kyvg/vue3-notification';
+
+// const { notify } = useNotification();
+
 const navigation = ref(false);
 const theme = useTheme()
 
@@ -18,6 +23,7 @@ function toggleTheme() {
       <VAppBarTitle>CryptoScam</VAppBarTitle>
     </div>
     <div class="end-box">
+      <!-- <v-btn icon="mdi-test-tube" @click="() => notify({title: 'Test'})"></v-btn> TODO: remove -->
       <v-btn icon="mdi-theme-light-dark" @click="toggleTheme"></v-btn>
       <v-btn icon="$vuetify" @click="connectMetaMaskAccount"></v-btn>
     </div>
