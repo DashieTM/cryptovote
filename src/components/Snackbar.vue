@@ -2,7 +2,7 @@
     <div>
         <v-snackbar
         :timeout="timeout"
-        :color="color"
+        color="error"
         >
             {{ message }}
         </v-snackbar>
