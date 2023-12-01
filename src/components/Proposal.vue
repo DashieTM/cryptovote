@@ -37,7 +37,7 @@ export default {
 
   <v-card class="Vote" color="secondary">
 
-    <v-card-title class="title">{{ proposal_name }}</v-card-title>
+    <v-card-title class="title ml-2">{{ proposal_name }}</v-card-title>
 
     <VSpacer/>
 
