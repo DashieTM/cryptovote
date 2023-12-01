@@ -9,6 +9,7 @@ import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { aliases, mdi } from 'vuetify/iconsets/mdi';
 import "vuetify/styles";
+import Notifications from '@kyvg/vue3-notification'
 import Audit from './pages/Audit.vue';
 import Home from './pages/Home.vue';
 import NewBallot from './pages/NewBallot.vue';
@@ -75,5 +76,5 @@ const vuetify = createVuetify({
   },
 });
 
-createApp(App).use(vuetify).use(router).mount("#app");
+createApp(App).use(vuetify).use(router).use(Notifications).mount("#app");
 

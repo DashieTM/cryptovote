@@ -36,7 +36,7 @@
                 </div>
 
             </v-form>
-            <Loading v-else :size="30"/>
+            <Loading v-else :size="20"/>
             
         </v-card>
     </v-menu>
@@ -45,13 +45,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { isChairperson, hasRightToVote, hasVoted, delegateVote, giveRightToVote } from '../lib/api'
-import { useSnackbar } from '../composables/useSnackbar';
 
 import Loading from './Loading.vue';
 
 const props = defineProps({ ballot_address: String });
-
-const { showSnackbar } = useSnackbar();
 
 const loading = ref(false);
 const loadingDelegate = ref(false);
@@ -105,9 +102,9 @@ async function giveRightToVoteToTarget() {
         loading.value = true;
         giveRightToVote(props.ballot_address, targetAdress.value).then((success) => {
             if (success) {
-                showSnackbar(`${targetAdress} can now vote`, 'success');
+                // TODO: implement notification
             } else {
-                showSnackbar('Could not give right to vote', 'error');
+                // TODO: implement notification
             }
             loading.value = false;
         })
@@ -119,9 +116,9 @@ async function delegateVoteToTarget() {
         loading.value = true;
         delegateVote(props.ballot_address, targetAdress.value).then((success) => {
             if (success) {
-                showSnackbar(`Your vote was delegated to ${targetAdress}`, 'success');
+                // TODO: implement notification
             } else {
-                showSnackbar(`Could not delegate vote`, 'error');
+                // TODO: implement notification
             }
             loading.value = false;
         })

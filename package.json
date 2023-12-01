@@ -10,6 +10,7 @@
     "serve": "vue-cli-service serve"
   },
   "dependencies": {
+    "@kyvg/vue3-notification": "^3.0.2",
     "@mdi/font": "^7.3.67",
     "hardhat": "^2.19.1",
     "vite-plugin-vuetify": "^1.0.2",

@@ -2,11 +2,12 @@
 
 import { createBallot } from '../lib/api.js';
 import { ref } from 'vue';
-import { useSnackbar } from '../composables/useSnackbar';
 
 import Loading from '../components/Loading.vue';
+import { useNotification } from '@kyvg/vue3-notification';
 
-const { showSnackbar } = useSnackbar();
+const { notify } = useNotification();
+
 const loading = ref(false);
 const ballot_name = ref('');
 const proposal_names = ref([]);
@@ -48,9 +49,15 @@ async function submit(event) {
   if (form.valid) {
     createBallot(ballot_name.value, proposal_names.value).then((receipt) => {
       if (!receipt.status) {
-        showSnackbar('Ballot was not created due to an error', 'error');
+        notify({
+          text: 'Ballot could not be created due to an error',
+          type: 'error'
+        });
       } else {
-        showSnackbar('Ballot was created', 'success');
+        notify({
+          text: 'Ballot successfully created',
+          type: 'success'
+        });
       }
 
       proposal_names.value = [];
@@ -75,11 +82,6 @@ async function submit(event) {
     <div v-for="index of proposal_count">
         <v-text-field class="input" v-model="proposal_names[index-1]" :rules="proposal_name_rule" :counter="30" label="Enter a Proposal" required/>
     </div>
-
-    <!-- <v-btn class="button" @click="() => addVoter()">Add Voter</v-btn>
-    <div v-for="index in voter_count">
-        <v-text-field class="input" v-model="voters[index-1]" :rules="voter_rule" :counter="30" label="Enter a Voter"/>
-    </div> -->
 
     <v-btn class="button" type="submit">Create Ballot</v-btn>
 
