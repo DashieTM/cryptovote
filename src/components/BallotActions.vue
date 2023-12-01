@@ -1,34 +1,66 @@
 <template>
     <v-menu v-model="menu" :close-on-content-click="false">
+
         <template v-slot:activator="{ props }">
             <v-btn class="menu-btn" icon="mdi-pen-plus" color="primary" v-bind="props" @click="loadRights"/>
         </template>
+
         <v-card color="primary" min-width="500">
-            <v-text-field class="ma-2" v-model="targetAdress" :rules="address_rule" label="Target address"/>
-            <div class="actions ma-2">
-                <v-btn @click="" :disabled="canDelegate">
-                    Delegate Vote
-                </v-btn>
-                <v-btn @click="" :disabled="canGiveRightToVote">
-                    Give right to vote
-                </v-btn>
-            </div>
+
+            <v-form v-if="!loading" ref="form">
+
+                <v-text-field class="ma-2" v-model="targetAdress" :rules="address_rule" label="Target address"/>
+
+                <div class="actions ma-2">
+
+                    <v-btn @click="delegateVoteToTarget" :disabled="!canDelegate">
+                        <Loading v-if="loadingDelegate" :size="20"/>
+                        <div v-else-if="canDelegate">
+                            Delegate Vote
+                        </div>
+                        <div v-else>
+                            Can't delegate vote
+                        </div>
+                    </v-btn>
+
+                    <v-btn @click="giveRightToVoteToTarget" :disabled="!canGiveRightToVote">
+                        <Loading v-if="loadingGiveRightToVote" :size="20"/>
+                        <div v-else-if="canGiveRightToVote">
+                            Give right to vote
+                        </div>
+                        <div v-else>
+                            Can't give right to vote
+                        </div>
+                    </v-btn>
+
+                </div>
+
+            </v-form>
+            <Loading v-else :size="30"/>
+            
         </v-card>
     </v-menu>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { isChairperson, hasRightToVote, hasVoted } from '../lib/api'
+import { isChairperson, hasRightToVote, hasVoted, delegateVote, giveRightToVote } from '../lib/api'
+import { useSnackbar } from '../composables/useSnackbar';
+
+import Loading from './Loading.vue';
 
 const props = defineProps({ ballot_address: String });
 
+const { showSnackbar } = useSnackbar();
+
+const loading = ref(false);
 const loadingDelegate = ref(false);
 const canDelegate = ref(false);
 const loadingGiveRightToVote = ref(false);
 const canGiveRightToVote = ref(false);
 const menu = ref(false);
 const targetAdress = ref('');
+const form = ref(null);
 
 const address_rule = [
   (value: String) => {
@@ -66,6 +98,34 @@ async function loadRights() {
         }
         loadingGiveRightToVote.value = false;
     });
+}
+
+async function giveRightToVoteToTarget() {
+    if (form.value && form.value.validate()) {
+        loading.value = true;
+        giveRightToVote(props.ballot_address, targetAdress.value).then((success) => {
+            if (success) {
+                showSnackbar(`${targetAdress} can now vote`, 'success');
+            } else {
+                showSnackbar('Could not give right to vote', 'error');
+            }
+            loading.value = false;
+        })
+    }
+}
+
+async function delegateVoteToTarget() {
+    if (form.value && form.value.validate()) {
+        loading.value = true;
+        delegateVote(props.ballot_address, targetAdress.value).then((success) => {
+            if (success) {
+                showSnackbar(`Your vote was delegated to ${targetAdress}`, 'success');
+            } else {
+                showSnackbar(`Could not delegate vote`, 'error');
+            }
+            loading.value = false;
+        })
+    }
 }
 
 </script>

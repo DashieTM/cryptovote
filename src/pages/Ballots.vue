@@ -40,7 +40,7 @@ onBeforeMount(() => {
 </script>
 
 <template id="Ballots">
-  <Loading v-if="loading"/>
+  <Loading v-if="loading" :size="70"/>
 
   <v-container v-else class="ballots" fluid>
 

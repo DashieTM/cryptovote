@@ -35,7 +35,7 @@ export default {
 
 <template id="Proposal">
 
-  <v-card class="Vote">
+  <v-card class="Vote" color="secondary">
 
     <v-card-title class="title">{{ proposal_name }}</v-card-title>
 

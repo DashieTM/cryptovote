@@ -143,7 +143,7 @@ export const isChairperson = async (ballotAddress) => {
       const ballotContract = new web3.eth.Contract(ballotAbi, ballotAddress);
       const chairperson = await ballotContract.methods.chairperson().call();
 
-      return chairperson === account;
+      return chairperson.toLowerCase() === account.toLowerCase();
   } catch (error) {
     console.log('isChairperson error', error);
   }
