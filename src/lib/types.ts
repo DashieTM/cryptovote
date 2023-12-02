@@ -18,7 +18,6 @@ export enum EventTypes {
 }
 
 export function createEvent(event) {
-  console.log(event);
   if (event.event == "BallotCreated") {
     return {
       type: EventTypes.BallotCreatedEvent,

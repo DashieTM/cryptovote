@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { EventTypes, Event, createEvent } from './../lib/types.ts';
 import { ref, onMounted } from 'vue';
-onMounted(() => {
-  console.log(from_address);
-  console.log(on_address);
-  console.log(to_address);
-});
 const { event_type, from_address, on_address, to_address } = defineProps(['event_type', 'from_address', 'on_address', 'to_address']);
 </script>
 

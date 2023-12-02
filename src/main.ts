@@ -48,9 +48,7 @@ router.beforeEach(async (to, _) => {
   if (to.fullPath != "/") {
     let hasPermission = await hasAccountPermissions();
     if (!hasPermission) {
-      console.log(hasPermission);
       let permissions = await connectMetaMaskAccount();
-      console.log(permissions);
       if (!permissions) {
         return '/';
       }

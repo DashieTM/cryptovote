@@ -1,4 +1,4 @@
-export const ballotManagerAddress = '0xc1e5D055A4733D44290F9d1c67F37D885B6EA3C3'
+export const ballotManagerAddress = '0x75BF7EA5Fc274173fc1C602C39bC67Cef5FbdB9e'
 
 export const ballotManagerAbi = [
   {
@@ -138,7 +138,12 @@ export const ballotAbi = [
         "internalType": "address",
         "name": "recipient",
         "type": "address"
-      }
+      },
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
     ],
     "name": "VoteDelegated",
     "type": "event"
@@ -163,7 +168,12 @@ export const ballotAbi = [
         "internalType": "address",
         "name": "recipient",
         "type": "address"
-      }
+      },
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
     ],
     "name": "VoteGiven",
     "type": "event"

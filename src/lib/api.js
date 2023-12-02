@@ -37,7 +37,6 @@ const getAccount = async () => {
 export const hasAccountPermissions = async () => {
   if (window.ethereum) {
     const permissions = await window.ethereum.request({ method: 'wallet_getPermissions' });
-    console.log(permissions);
 
     return permissions.length > 0 ? true : false;
   }
@@ -56,14 +55,12 @@ export const getBalance = async () => {
 
 export const createBallot = async (ballotName, proposalNames) => {
   await ballotManagerContract.once('BallotCreated', {}, function(error, event) {
-    console.log(event);
     ballotAddress = event.ballotAddress;
   });
   try {
     let ballotAddress;
     const account = await getAccount();
     const receipt = await ballotManagerContract.methods.createBallot(ballotName, proposalNames).send({ from: account });
-    console.log(receipt);
     if (receipt.status) {
       return {
         status: true,
@@ -145,7 +142,7 @@ export const isChairperson = async (ballotAddress) => {
 
     return chairperson.toLowerCase() === account.toLowerCase();
   } catch (error) {
-    console.log('isChairperson error', error);
+    console.error('isChairperson error', error);
   }
 }
 
@@ -178,7 +175,6 @@ export const getProposals = async (ballotAddress) => {
     const ballotContract = new web3.eth.Contract(ballotAbi, ballotAddress);
     const proposals = await ballotContract.methods.getProposals().call();
 
-    console.log(proposals);
     return proposals;
 
   } catch (error) {
@@ -198,18 +194,18 @@ export const getWinningProposal = async (ballotAddress) => {
 }
 
 export const unsubscribeAllEvents = async () => {
-  await web3.eth.clearSubscripotions();
+  await web3.eth.clearSubscriptions();
 }
 
 export const subscribeEvents = async (addresses, funcs, sole) => {
-  var subscription = await web3.eth.subscribe('logs', { fromBlock: "earliest", address: addresses, topics: [] });
+  var subscription = await web3.eth.subscribe('logs', { fromBlock: "latest", address: addresses, topics: [] });
   subscription.on("data", async (log) => {
     if (sole) {
-      decode(log, ballotCreatedABI, funcs[0]);
+      await decode(log, ballotCreatedABI, funcs[0]);
       return;
     }
     for (let index = 0; index < eventABIS.length; index++) {
-      if (decode(log, eventABIS[index], funcs[index])) {
+      if (await decode(log, eventABIS[index], funcs[index])) {
         return;
       }
     }
@@ -218,14 +214,12 @@ export const subscribeEvents = async (addresses, funcs, sole) => {
 
 async function decode(log, abi, func) {
   try {
-    console.log(log);
     const decodedData = web3.eth.abi.decodeLog(abi, log.data, log.topics);
     await func(decodedData);
     // this is literal hell...
     return true;
   } catch (error) {
     // this means another event fired, which we ignore
-    console.log("got some other event");
     return false;
   }
 }
@@ -234,10 +228,8 @@ export const getPastEventsOfBallot = async (ballotAddress) => {
   try {
     const ballotContract = new web3.eth.Contract(ballotAbi, ballotAddress);
     const result = await web3.eth.getBlockNumber();
-    console.log(result);
     if (result !== null) {
       const events = await ballotContract.getPastEvents("allEvents", { fromBlock: result - 1000n, toBlock: result }).then((geil) => { return geil; });
-      console.log(events);
       return events;
     }
     return [];

@@ -34,7 +34,6 @@ function setup() {
             eventArray.push(createEvent(event));
           }
         }
-        console.log(eventArray);
         ballotsArray.value.push({
           name: element.name,
           events: eventArray,

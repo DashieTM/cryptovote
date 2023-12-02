@@ -5,7 +5,7 @@ import Proposal from '../components/Proposal.vue';
 import Loading from '../components/Loading.vue';
 import BallotActions from '../components/BallotActions.vue';
 
-import { getBallots, getProposals, subscribeEvents } from '../lib/api.js';
+import { getBallots, getProposals, subscribeEvents, unsubscribeAllEvents } from '../lib/api.js';
 import { ballotManagerAddress } from '../lib/config.js';
 import { BallotType } from '../lib/types.ts';
 import { useNotification } from '@kyvg/vue3-notification';
@@ -18,6 +18,8 @@ const { notify } = useNotification();
 
 const funcs = [
   (event) => {
+    // later: extract this to get events everywhere?
+    // well....
     for(let ballot of ballots.value) {
       if(ballot.address === event.ballotAddress) {
         for(let proposal of ballot.proposals) {
@@ -33,8 +35,6 @@ const funcs = [
     });
   },
   (event) => {
-    console.log("vote delegated")
-    console.log(event);
     if (event.eventName === "VoteDelegated") {
       notify({
         text: `${event.delegator} delegated their vote to ${event.recipient} on ballot ${event.ballotAddress}`,
@@ -51,10 +51,8 @@ const funcs = [
 ];
 
 
-let createdFunction = [(event) => {
-  console.log(event);
-  // TODO create new ballot when this fires
-  // TODO subscribe and unsubscribe properly
+let createdFunction = [ async (event) => {
+  fetchProposals();
   unsubscribeAllEvents();
   subscribe();
 }];
