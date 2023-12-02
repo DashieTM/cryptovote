@@ -5,16 +5,33 @@ import Proposal from '../components/Proposal.vue';
 import Loading from '../components/Loading.vue';
 import BallotActions from '../components/BallotActions.vue';
 
-import { getBallots, getProposals, subscribeEvents, subscribeBallotEvents } from '../lib/api.js';
+import { getBallots, getProposals, subscribeEvents } from '../lib/api.js';
+import { ballotManagerAddress, ballotCreatedABI, votedABI, voteDelegatedOrGivenABI } from '../lib/config.js';
 import { BallotType } from '../lib/types.ts';
 
 
 const loading = ref(false);
 const ballots = ref<BallotType[] | null>(null);
+
+async function voteDelegatedFunction(event) {
+  console.log("vote delegated")
+  console.log(event);
+  // TODO notify
+}
+
+async function voteGivenFunction(event) {
+  console.log("vote given")
+  console.log(event);
+  // TODO notify
+}
+
 async function globalFunction(event) {
   console.log(event);
   // TODO create new ballot when this fires
   // TODO subscribe and unsubscribe properly
+  subscribeEvents(event.ballotAddress, votedABI, ballotFunction);
+  subscribeEvents(event.ballotAddress, voteDelegatedOrGivenABI, voteDelegatedFunction);
+  subscribeEvents(event.ballotAddress, voteDelegatedOrGivenABI, voteGivenFunction);
 }
 
 async function ballotFunction(event) {
@@ -22,17 +39,11 @@ async function ballotFunction(event) {
     if(ballot.address === event.ballotAddress) {
       for(let proposal of ballot.proposals) {
         if(proposal.name === event.proposal) {
-          proposal.voteCount += 1n;
+          proposal.voteCount += event.weight;
         }
       } 
     }
   }
-}
-
-function eventListener() {
-  subscribeEvents().then((event) => {
-    console.log(event);
-  });
 }
 
 async function fetchProposals() {
@@ -56,8 +67,10 @@ async function fetchProposals() {
       ballots.value = ballotsArray;
     }
   }
-  subscribeBallotEvents(addresses, ballotFunction);
-  subscribeEvents(globalFunction);
+  subscribeEvents(addresses, votedABI, ballotFunction);
+  subscribeEvents(addresses, voteDelegatedOrGivenABI, voteDelegatedFunction);
+  subscribeEvents(addresses, voteDelegatedOrGivenABI, voteGivenFunction);
+  subscribeEvents(ballotManagerAddress, ballotCreatedABI, globalFunction);
 }
 
 onBeforeMount(() => {

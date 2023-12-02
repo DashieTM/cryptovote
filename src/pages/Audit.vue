@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getBallots, getLogsOfBallot, getLogs } from './../lib/api.js';
+import { getBallots, getPastEventsOfBallot, getPastEventsOfBallotManager } from './../lib/api.js';
 import { createEvent } from './../lib/types.ts';
 import { ref, onMounted } from 'vue';
 import EventEntry from '../components/EventEntry.vue';
@@ -18,7 +18,7 @@ onMounted(() => {
 function setup() {
   loadingLogs.value = true;
   loadingBallots.value = true;
-  getLogs().then((events) => {
+  getPastEventsOfBallotManager().then((events) => {
     for (let event of events) {
       ballotEvents.value.push(createEvent(event));
     }
@@ -27,7 +27,7 @@ function setup() {
   getBallots().then((data) => {
     for (let index = 0; index < data.length; index++) {
       const element = data[index];
-      getLogsOfBallot(element.address).then((events) => {
+      getPastEventsOfBallot(element.address).then((events) => {
         let eventArray = [];
         if (events.length !== 0) {
           for (let event of events) {

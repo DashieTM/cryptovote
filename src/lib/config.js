@@ -124,7 +124,7 @@ export const ballotAbi = [
       {
         "indexed": true,
         "internalType": "address",
-        "name": "owner",
+        "name": "delegator",
         "type": "address"
       },
       {
@@ -188,6 +188,12 @@ export const ballotAbi = [
         "internalType": "string",
         "name": "proposal",
         "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "weight",
+        "type": "uint256"
       }
     ],
     "name": "Voted",
@@ -368,3 +374,81 @@ export const ballotAbi = [
     "type": "function"
   }
 ]
+
+export const votedABI =
+  [
+    {
+      indexed: true,
+      internalType: "address",
+      name: "voter",
+      type: "address"
+    },
+    {
+      indexed: true,
+      internalType: "address",
+      name: "ballotAddress",
+      type: "address"
+    },
+    {
+      indexed: false,
+      internalType: "string",
+      name: "proposal",
+      type: "string"
+    }
+  ]
+
+export const ballotCreatedABI =
+  [
+    {
+      indexed: true,
+      internalType: "address",
+      name: "creator",
+      type: "address"
+    },
+    {
+      indexed: true,
+      internalType: "address",
+      name: "ballotAddress",
+      type: "address"
+    },
+    {
+      components: [
+        {
+          internalType: "string",
+          name: "name",
+          type: "string"
+        },
+        {
+          internalType: "uint256",
+          name: "voteCount",
+          type: "uint256"
+        }
+      ],
+      indexed: true,
+      internalType: "struct Proposal[]",
+      name: "proposals",
+      type: "tuple[]"
+    }
+  ]
+
+export const voteDelegatedOrGivenABI =
+  [
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "delegator",
+      "type": "address"
+    },
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "ballotAddress",
+      "type": "address"
+    },
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "recipient",
+      "type": "address"
+    }
+  ]

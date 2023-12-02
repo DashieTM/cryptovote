@@ -201,103 +201,21 @@ export const unsubscribeAllEvents = async () => {
   await web3.eth.clearSubscripotions();
 }
 
-export const subscribeEvents = async (func) => {
-  try {
-    const result = await web3.eth.getBlockNumber();
-    if (result !== null) {
-      var lel = await web3.eth.subscribe('logs', { fromBlock: "earliest", address: ballotManagerAddress, topics: [] });
-      lel.on("data", async (log) => {
-        try {
-          console.log("trying");
-          const decodedData = web3.eth.abi.decodeLog([
-            {
-              indexed: true,
-              internalType: "address",
-              name: "creator",
-              type: "address"
-            },
-            {
-              indexed: true,
-              internalType: "address",
-              name: "ballotAddress",
-              type: "address"
-            },
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string"
-                },
-                {
-                  internalType: "uint256",
-                  name: "voteCount",
-                  type: "uint256"
-                }
-              ],
-              indexed: true,
-              internalType: "struct Proposal[]",
-              name: "proposals",
-              type: "tuple[]"
-            }
-          ], log.data, log.topics);
-          console.log(decodedData);
-          await func(decodedData);
-          // this is literal hell...
-        } catch (error) {
-          // this means another event fired, which we ignore
-          console.log("got some other event");
-        }
-      });
+export const subscribeEvents = async (addresses, abi, func) => {
+  var subscription = await web3.eth.subscribe('logs', { fromBlock: "earliest", address: addresses, topics: [] });
+  subscription.on("data", async (log) => {
+    try {
+      const decodedData = web3.eth.abi.decodeLog(abi, log.data, log.topics);
+      await func(decodedData);
+      // this is literal hell...
+    } catch (error) {
+      // this means another event fired, which we ignore
+      console.log("got some other event");
     }
-  } catch (error) {
-    console.error('error bro', error);
-  }
+  });
 }
 
-export const subscribeBallotEvents = async (addresses, func) => {
-  try {
-    const result = await web3.eth.getBlockNumber();
-    if (result !== null) {
-      var lel = await web3.eth.subscribe('logs', { fromBlock: "earliest", address: addresses, topics: [] });
-      lel.on("data", async (log) => {
-        try {
-          console.log("trying");
-          const decodedData = web3.eth.abi.decodeLog([
-            {
-              indexed: true,
-              internalType: "address",
-              name: "voter",
-              type: "address"
-            },
-            {
-              indexed: true,
-              internalType: "address",
-              name: "ballotAddress",
-              type: "address"
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "proposal",
-              type: "string"
-            }
-          ], log.data, log.topics);
-          console.log(decodedData);
-          await func(decodedData);
-          // this is literal hell...
-        } catch (error) {
-          // this means another event fired, which we ignore
-          console.log("got some other event");
-        }
-      });
-    }
-  } catch (error) {
-    console.error('error bro', error);
-  }
-}
-
-export const getLogsOfBallot = async (ballotAddress) => {
+export const getPastEventsOfBallot = async (ballotAddress) => {
   try {
     const ballotContract = new web3.eth.Contract(ballotAbi, ballotAddress);
     const result = await web3.eth.getBlockNumber();
@@ -309,12 +227,12 @@ export const getLogsOfBallot = async (ballotAddress) => {
     }
     return [];
   } catch (error) {
-    console.error('getWinningProposal error', error);
+    console.error('getPastEventsOfBallot error', error);
     return [];
   }
 }
 
-export const getLogs = async () => {
+export const getPastEventsOfBallotManager = async () => {
   try {
     const result = await web3.eth.getBlockNumber();
     if (result !== null) {
@@ -323,7 +241,7 @@ export const getLogs = async () => {
     }
     return [];
   } catch (error) {
-    console.error('getWinningProposal error', error);
+    console.error('getPastEventsOfBallotManager error', error);
     return [];
   }
 }

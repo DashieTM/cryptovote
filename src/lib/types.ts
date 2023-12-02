@@ -25,6 +25,7 @@ export function createEvent(event) {
       from_address: event.returnValues.creator,
       on_address: event.returnValues.ballotAddress,
       to_address: "",
+      weight: 0,
     }
   }
   if (event.event == "Voted") {
@@ -33,6 +34,7 @@ export function createEvent(event) {
       from_address: event.returnValues.voter,
       on_address: event.returnValues.ballotAddress,
       to_address: event.returnValues.proposal,
+      weight: 0,
     }
   }
   if (event.event == "VoteGiven") {
@@ -41,6 +43,7 @@ export function createEvent(event) {
       from_address: event.returnValues.owner,
       on_address: event.returnValues.ballotAddress,
       to_address: event.returnValues.recipient,
+      weight: event.returnValues.weight,
     }
   }
   if (event.event == "VoteDelegated") {
@@ -49,6 +52,7 @@ export function createEvent(event) {
       from_address: event.returnValues.owner,
       on_address: event.returnValues.ballotAddress,
       to_address: event.returnValues.recipient,
+      weight: 0,
     }
   }
   return {
@@ -56,6 +60,7 @@ export function createEvent(event) {
     from_address: "",
     on_address: "",
     to_address: "",
+    weight: 0,
   }
 }
 
