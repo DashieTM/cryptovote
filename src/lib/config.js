@@ -1,4 +1,4 @@
-export const ballotManagerAddress = '0x460700747a992dD9C59Aa57e1b212d7b6B4c68a7'
+export const ballotManagerAddress = '0xc1e5D055A4733D44290F9d1c67F37D885B6EA3C3'
 
 export const ballotManagerAbi = [
   {
@@ -375,28 +375,6 @@ export const ballotAbi = [
   }
 ]
 
-export const votedABI =
-  [
-    {
-      indexed: true,
-      internalType: "address",
-      name: "voter",
-      type: "address"
-    },
-    {
-      indexed: true,
-      internalType: "address",
-      name: "ballotAddress",
-      type: "address"
-    },
-    {
-      indexed: false,
-      internalType: "string",
-      name: "proposal",
-      type: "string"
-    }
-  ]
-
 export const ballotCreatedABI =
   [
     {
@@ -431,24 +409,72 @@ export const ballotCreatedABI =
     }
   ]
 
-export const voteDelegatedOrGivenABI =
+export const eventABIS =
   [
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "delegator",
-      "type": "address"
-    },
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "ballotAddress",
-      "type": "address"
-    },
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "recipient",
-      "type": "address"
-    }
+    [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "voter",
+        type: "address"
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "ballotAddress",
+        type: "address"
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "proposal",
+        type: "string"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "weight",
+        type: "uint256"
+      }
+    ],
+    [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "delegator",
+        type: "address"
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "ballotAddress",
+        type: "address"
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "recipient",
+        type: "address"
+      }
+    ],
+    [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "owner",
+        type: "address"
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "ballotAddress",
+        type: "address"
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "recipient",
+        type: "address"
+      }
+    ]
   ]

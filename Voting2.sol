@@ -40,8 +40,8 @@ contract BallotManager {
  * @dev Implements voting process along with vote delegation
  */
 contract Ballot {
-    event VoteGiven(address indexed owner, address indexed ballotAddress, address indexed recipient);
-    event VoteDelegated(address indexed delegator, address indexed ballotAddress, address indexed recipient);
+    event VoteGiven(address indexed owner, address indexed ballotAddress, address indexed recipient, string eventName);
+    event VoteDelegated(address indexed delegator, address indexed ballotAddress, address indexed recipient, string eventName);
     event Voted(address indexed voter, address indexed ballotAddress, string proposal, uint weight);
 
     struct Voter {
@@ -100,7 +100,7 @@ contract Ballot {
         );
         require(voters[voter].weight == 0);
         voters[voter].weight = 1;
-        emit VoteGiven(msg.sender, address(this), voter);
+        emit VoteGiven(msg.sender, address(this), voter, "VoteGiven");
     }
 
     /**
@@ -130,7 +130,7 @@ contract Ballot {
             // add to her weight.
             delegate_.weight += sender.weight;
         }
-        emit VoteDelegated(msg.sender, address(this), to);
+        emit VoteDelegated(msg.sender, address(this), to, "VoteDelegated");
     }
 
     /**

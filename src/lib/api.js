@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import { ballotManagerAddress, ballotManagerAbi, ballotAbi } from './config';
+import { ballotManagerAddress, ballotManagerAbi, ballotAbi, eventABIS } from './config';
 
 let web3;
 let ballotManagerContract;
@@ -201,18 +201,33 @@ export const unsubscribeAllEvents = async () => {
   await web3.eth.clearSubscripotions();
 }
 
-export const subscribeEvents = async (addresses, abi, func) => {
+export const subscribeEvents = async (addresses, funcs, sole) => {
   var subscription = await web3.eth.subscribe('logs', { fromBlock: "earliest", address: addresses, topics: [] });
   subscription.on("data", async (log) => {
-    try {
-      const decodedData = web3.eth.abi.decodeLog(abi, log.data, log.topics);
-      await func(decodedData);
-      // this is literal hell...
-    } catch (error) {
-      // this means another event fired, which we ignore
-      console.log("got some other event");
+    if (sole) {
+      decode(log, ballotCreatedABI, funcs[0]);
+      return;
+    }
+    for (let index = 0; index < eventABIS.length; index++) {
+      if (decode(log, eventABIS[index], funcs[index])) {
+        return;
+      }
     }
   });
+}
+
+async function decode(log, abi, func) {
+  try {
+    console.log(log);
+    const decodedData = web3.eth.abi.decodeLog(abi, log.data, log.topics);
+    await func(decodedData);
+    // this is literal hell...
+    return true;
+  } catch (error) {
+    // this means another event fired, which we ignore
+    console.log("got some other event");
+    return false;
+  }
 }
 
 export const getPastEventsOfBallot = async (ballotAddress) => {

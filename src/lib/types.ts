@@ -49,7 +49,7 @@ export function createEvent(event) {
   if (event.event == "VoteDelegated") {
     return {
       type: EventTypes.VoteDelegatedEvent,
-      from_address: event.returnValues.owner,
+      from_address: event.returnValues.delegator,
       on_address: event.returnValues.ballotAddress,
       to_address: event.returnValues.recipient,
       weight: 0,

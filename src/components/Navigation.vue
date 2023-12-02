@@ -2,14 +2,12 @@
 import { ref } from 'vue';
 import { connectMetaMaskAccount } from '../lib/api';
 import { useTheme } from 'vuetify'
-
-// TODO: remove
-// import { useNotification } from '@kyvg/vue3-notification';
-
-// const { notify } = useNotification();
+import { getBallots, getProposals, subscribeEvents, unsubscribeAllEvents } from '../lib/api.js';
+import { ballotManagerAddress } from '../lib/config.js';
+import { createdFunction, votedFunction } from '../pages/Ballots.vue';
 
 const navigation = ref(false);
-const theme = useTheme()
+const theme = useTheme();
 
 function toggleTheme() {
   theme.global.name.value = theme.global.current.value.dark ? 'light' : 'tokyoNight'

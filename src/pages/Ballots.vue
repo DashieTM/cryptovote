@@ -1,49 +1,82 @@
 <script setup lang="ts">
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount , onBeforeUnmount } from 'vue';
 
 import Proposal from '../components/Proposal.vue';
 import Loading from '../components/Loading.vue';
 import BallotActions from '../components/BallotActions.vue';
 
 import { getBallots, getProposals, subscribeEvents } from '../lib/api.js';
-import { ballotManagerAddress, ballotCreatedABI, votedABI, voteDelegatedOrGivenABI } from '../lib/config.js';
+import { ballotManagerAddress } from '../lib/config.js';
 import { BallotType } from '../lib/types.ts';
+import { useNotification } from '@kyvg/vue3-notification';
 
 
 const loading = ref(false);
 const ballots = ref<BallotType[] | null>(null);
 
-async function voteDelegatedFunction(event) {
-  console.log("vote delegated")
-  console.log(event);
-  // TODO notify
-}
+const { notify } = useNotification();
 
-async function voteGivenFunction(event) {
-  console.log("vote given")
-  console.log(event);
-  // TODO notify
-}
+const funcs = [
+  (event) => {
+    for(let ballot of ballots.value) {
+      if(ballot.address === event.ballotAddress) {
+        for(let proposal of ballot.proposals) {
+          if(proposal.name === event.proposal) {
+            proposal.voteCount += event.weight;
+          }
+        } 
+      }
+    }
+    notify({
+      text: `${event.voter} voted for ${event.proposal} on ballot ${event.ballotAddress}`,
+      type: 'event'
+    });
+  },
+  (event) => {
+    console.log("vote delegated")
+    console.log(event);
+    notify({
+      text: `${event.delegator} delegated their vote to ${event.recipient} on ballot ${event.ballotAddress}`,
+      type: 'event'
+    });
+  },
+  // how to differentiate?
+  (event) => {
+    console.log("vote given")
+    console.log(event);
+    notify({
+      text: `${event.owner} gave voting rights to ${event.recipient} on ballot ${event.ballotAddress}`,
+      type: 'event'
+    });
+  }
+];
 
-async function globalFunction(event) {
+
+let createdFunction = [(event) => {
   console.log(event);
   // TODO create new ballot when this fires
   // TODO subscribe and unsubscribe properly
-  subscribeEvents(event.ballotAddress, votedABI, ballotFunction);
-  subscribeEvents(event.ballotAddress, voteDelegatedOrGivenABI, voteDelegatedFunction);
-  subscribeEvents(event.ballotAddress, voteDelegatedOrGivenABI, voteGivenFunction);
-}
+  subscribeEvents(event.ballotAddress, votedABI, votedFunction);
+  subscribeEvents(event.ballotAddress, voteDelegatedABI, voteDelegatedFunction);
+  subscribeEvents(event.ballotAddress, voteGivenABI, voteGivenFunction);
+}];
 
-async function ballotFunction(event) {
-  for(let ballot of ballots.value) {
-    if(ballot.address === event.ballotAddress) {
-      for(let proposal of ballot.proposals) {
-        if(proposal.name === event.proposal) {
-          proposal.voteCount += event.weight;
-        }
-      } 
-    }
+onBeforeMount(() => {
+  subscribe();
+});
+
+onBeforeUnmount(() => {
+  unsubscribeAllEvents();
+});
+
+async function subscribe() {
+  let ballots = await getBallots();
+  let addresses: String[] = [];
+  for(let ballot of ballots) {
+    addresses.push(ballot.address);
   }
+  subscribeEvents(addresses, funcs, false);
+  subscribeEvents(ballotManagerAddress, createdFunction, true);
 }
 
 async function fetchProposals() {
@@ -67,10 +100,6 @@ async function fetchProposals() {
       ballots.value = ballotsArray;
     }
   }
-  subscribeEvents(addresses, votedABI, ballotFunction);
-  subscribeEvents(addresses, voteDelegatedOrGivenABI, voteDelegatedFunction);
-  subscribeEvents(addresses, voteDelegatedOrGivenABI, voteGivenFunction);
-  subscribeEvents(ballotManagerAddress, ballotCreatedABI, globalFunction);
 }
 
 onBeforeMount(() => {
