@@ -89,7 +89,7 @@ async function voteForProposal() {
 </template>
 
 <style scoped>
-@media (max-width: 700px) {
+@media (max-width: 400px) {
   .Vote {
     flex-direction: column !important;
   }
@@ -99,6 +99,7 @@ async function voteForProposal() {
   display: flex;
   flex-direction: row;
   align-items: center;
+  min-width: 5rem;
 }
 
 .title {
