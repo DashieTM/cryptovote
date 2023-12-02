@@ -455,26 +455,12 @@ export const eventABIS =
         internalType: "address",
         name: "recipient",
         type: "address"
-      }
-    ],
-    [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "owner",
-        type: "address"
       },
       {
         indexed: true,
-        internalType: "address",
-        name: "ballotAddress",
-        type: "address"
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "recipient",
-        type: "address"
+        internalType: "string",
+        name: "eventName",
+        type: "string"
       }
     ]
   ]

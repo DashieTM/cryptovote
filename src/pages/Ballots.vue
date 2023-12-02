@@ -35,17 +35,16 @@ const funcs = [
   (event) => {
     console.log("vote delegated")
     console.log(event);
+    if (event.eventName === "VoteDelegated") {
+      notify({
+        text: `${event.delegator} delegated their vote to ${event.recipient} on ballot ${event.ballotAddress}`,
+        type: 'event'
+      });
+      return;
+    }
     notify({
-      text: `${event.delegator} delegated their vote to ${event.recipient} on ballot ${event.ballotAddress}`,
-      type: 'event'
-    });
-  },
-  // how to differentiate?
-  (event) => {
-    console.log("vote given")
-    console.log(event);
-    notify({
-      text: `${event.owner} gave voting rights to ${event.recipient} on ballot ${event.ballotAddress}`,
+      // same name as decoding doesn't provide proper event conversion
+      text: `${event.delegator} gave voting rights to ${event.recipient} on ballot ${event.ballotAddress}`,
       type: 'event'
     });
   }
@@ -56,9 +55,8 @@ let createdFunction = [(event) => {
   console.log(event);
   // TODO create new ballot when this fires
   // TODO subscribe and unsubscribe properly
-  subscribeEvents(event.ballotAddress, votedABI, votedFunction);
-  subscribeEvents(event.ballotAddress, voteDelegatedABI, voteDelegatedFunction);
-  subscribeEvents(event.ballotAddress, voteGivenABI, voteGivenFunction);
+  unsubscribeAllEvents();
+  subscribe();
 }];
 
 onBeforeMount(() => {
