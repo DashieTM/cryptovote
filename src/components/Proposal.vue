@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { vote, hasRightToVote, hasVoted } from '../lib/api.js';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useNotification } from '@kyvg/vue3-notification';
 
 import Loading from '../components/Loading.vue';
@@ -11,13 +11,18 @@ const props = defineProps({
   proposal_name: String,
   vote_count: Number,
   ballot_address: String,
-  index: Number
+  index: Number,
+  ballotArray: ref<BallotType[]>,
 });
 
 const emit = defineEmits(["proposalUpdate"]);
 
 const loading = ref(false);
 const canVote = ref(false);
+
+watch(props.ballotArray, (old, newValue) => {
+  checkVotePermission();
+});
 
 onMounted(() => {
   checkVotePermission();
@@ -32,6 +37,8 @@ async function checkVotePermission() {
 
   if (hasVotePermission && !hasAlreadyVoted) {
     canVote.value = true;
+  } else {
+    canVote.value = false;
   }
 
   loading.value = false;

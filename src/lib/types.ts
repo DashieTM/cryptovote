@@ -6,7 +6,8 @@ export type ProposalType = {
 export type BallotType = {
   name: string,
   address: string,
-  proposals: ProposalType[]
+  proposals: ProposalType[],
+  canVote: boolean,
 }
 
 export enum EventTypes {

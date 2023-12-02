@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import { ballotManagerAddress, ballotManagerAbi, ballotAbi, eventABIS } from './config';
+import { ballotManagerAddress, ballotManagerAbi, ballotAbi, eventABIS, ballotCreatedABI } from './config';
 
 let web3;
 let ballotManagerContract;
@@ -9,7 +9,7 @@ if (window.ethereum) {
   web3.eth.handleRevert = true;
   ballotManagerContract = new web3.eth.Contract(ballotManagerAbi, ballotManagerAddress);
 } else (
-  console.log('MetaMask is not installed')
+  console.log('Compatible wallet not found!')
 )
 
 export const connectMetaMaskAccount = async () => {
@@ -24,11 +24,11 @@ export const connectMetaMaskAccount = async () => {
       console.error('User denied account access');
     }
   } else {
-    console.log('MetaMask is not installed');
+    console.log('Compatible wallet not found!');
   }
 }
 
-const getAccount = async () => {
+export const getAccount = async () => {
   let accounts = await window.ethereum.request({ method: 'eth_accounts' });
 
   return accounts[0];
@@ -194,7 +194,7 @@ export const getWinningProposal = async (ballotAddress) => {
 }
 
 export const unsubscribeAllEvents = async () => {
-  await web3.eth.clearSubscriptions();
+  await web3.eth.clearSubscriptions(false);
 }
 
 export const subscribeEvents = async (addresses, funcs, sole) => {

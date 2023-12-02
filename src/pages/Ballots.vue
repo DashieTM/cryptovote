@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, onBeforeMount , onBeforeUnmount } from 'vue';
+import { ref, onBeforeMount , onBeforeUnmount, onBeforeUpdate } from 'vue';
 
 import Proposal from '../components/Proposal.vue';
 import Loading from '../components/Loading.vue';
 import BallotActions from '../components/BallotActions.vue';
 
-import { getBallots, getProposals, subscribeEvents, unsubscribeAllEvents } from '../lib/api.js';
+import { getBallots, getProposals, subscribeEvents, unsubscribeAllEvents, getAccount } from '../lib/api.js';
 import { ballotManagerAddress } from '../lib/config.js';
 import { BallotType } from '../lib/types.ts';
 import { useNotification } from '@kyvg/vue3-notification';
@@ -17,7 +17,7 @@ const ballots = ref<BallotType[] | null>(null);
 const { notify } = useNotification();
 
 const funcs = [
-  (event) => {
+  async (event) => {
     // later: extract this to get events everywhere?
     // well....
     for(let ballot of ballots.value) {
@@ -25,6 +25,7 @@ const funcs = [
         for(let proposal of ballot.proposals) {
           if(proposal.name === event.proposal) {
             proposal.voteCount += event.weight;
+            ballot.canVote = false;
           }
         } 
       }
@@ -34,7 +35,15 @@ const funcs = [
       type: 'event'
     });
   },
-  (event) => {
+  async (event) => {
+    let account = await getAccount();
+    for(let ballot of ballots.value) {
+      if(ballot.address === event.ballotAddress) {
+        if(event.recipient === account) {
+          ballot.canVote = true;
+        }
+      }
+    }
     if (event.eventName === "VoteDelegated") {
       notify({
         text: `${event.delegator} delegated their vote to ${event.recipient} on ballot ${event.ballotAddress}`,
@@ -42,8 +51,8 @@ const funcs = [
       });
       return;
     }
+    // same name as decoding doesn't provide proper event conversion
     notify({
-      // same name as decoding doesn't provide proper event conversion
       text: `${event.delegator} gave voting rights to ${event.recipient} on ballot ${event.ballotAddress}`,
       type: 'event'
     });
@@ -51,18 +60,24 @@ const funcs = [
 ];
 
 
-let createdFunction = [ async (event) => {
+const createdFunction = [async (event) => {
   fetchProposals();
-  unsubscribeAllEvents();
-  subscribe();
+  await unsubscribeAllEvents();
+  await subscribe();
+  notify({
+    text: `${event.creator} created ballot ${event.ballotAddress}`,
+    type: 'event'
+  });
 }];
 
-onBeforeMount(() => {
-  subscribe();
+onBeforeMount(async () => {
+  await unsubscribeAllEvents();
+  await subscribe();
 });
 
-onBeforeUnmount(() => {
-  unsubscribeAllEvents();
+onBeforeUpdate(async () => {
+  await unsubscribeAllEvents();
+  await subscribe();
 });
 
 async function subscribe() {
@@ -71,8 +86,8 @@ async function subscribe() {
   for(let ballot of ballots) {
     addresses.push(ballot.address);
   }
-  subscribeEvents(addresses, funcs, false);
-  subscribeEvents(ballotManagerAddress, createdFunction, true);
+  await subscribeEvents(addresses, funcs, false);
+  await subscribeEvents(ballotManagerAddress, createdFunction, true);
 }
 
 async function fetchProposals() {
@@ -88,6 +103,7 @@ async function fetchProposals() {
       name: element.name,
       address: element.address,
       proposals,
+      canVote: false,
     });
     addresses.push(element.address);
     done += 1;
@@ -125,6 +141,7 @@ onBeforeMount(() => {
                   :ballot_address="ballot.address"
                   :vote_count="proposal.voteCount"
                   :index="index"
+                  :ballotArray="ballots"
                   proposal_description="description"
                   />
 
