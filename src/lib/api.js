@@ -36,10 +36,12 @@ export const getAccount = async () => {
 
 export const hasAccountPermissions = async () => {
   if (window.ethereum) {
-    const permissions = await window.ethereum.request({ method: 'wallet_getPermissions' });
+      const permissions = await window.ethereum.request({ method: 'wallet_getPermissions' });
+      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
 
-    return permissions.length > 0 ? true : false;
+      return (permissions.length > 0 && accounts.length > 0);
   }
+  return false;
 }
 
 export const getBalance = async () => {
