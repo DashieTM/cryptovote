@@ -229,7 +229,7 @@ export const getPastEventsOfBallot = async (ballotAddress) => {
     const ballotContract = new web3.eth.Contract(ballotAbi, ballotAddress);
     const result = await web3.eth.getBlockNumber();
     if (result !== null) {
-      const events = await ballotContract.getPastEvents("allEvents", { fromBlock: result - 1000n, toBlock: result }).then((geil) => { return geil; });
+      const events = await ballotContract.getPastEvents("allEvents", { fromBlock: 0n, toBlock: result }).then((geil) => { return geil; });
       return events;
     }
     return [];
@@ -243,7 +243,7 @@ export const getPastEventsOfBallotManager = async () => {
   try {
     const result = await web3.eth.getBlockNumber();
     if (result !== null) {
-      const events = await ballotManagerContract.getPastEvents("allEvents", { fromBlock: result - 1000n, toBlock: result }).then((geil) => { return geil; });
+      const events = await ballotManagerContract.getPastEvents("allEvents", { fromBlock: 0n, toBlock: result }).then((geil) => { return geil; });
       return events;
     }
     return [];
