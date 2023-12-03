@@ -64,7 +64,7 @@ const { event_type, from_address, on_address, to_address } = defineProps(['event
       to
     </div>
     <div class="address">
-      {{ on_address }}
+      {{ to_address }}
     </div>
   </v-col>
   <v-col v-else>
